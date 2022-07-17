@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/en/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/en/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/en/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/en/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/en/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=EB+Garamond:300,300italic,400,400italic,700,700italic%7CNoto+Serif+SC:300,300italic,400,400italic,700,700italic%7CLong+Cang:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhzhzhy.github.io","root":"/en/","images":"/en/images","scheme":"Pisces","darkmode":true,"version":"8.12.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"default"},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/en/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/en/js/config.js"></script>
+
+    <meta name="description" content="This is my coc-nvim configuration file document refer Here in Github repository for more detail coc-vimrcConfiguration of my coc-nvim &amp; Vimrc Vim InstallationInstallation GuideGithub pageNeovim In">
+<meta property="og:type" content="article">
+<meta property="og:title" content="coc-vimrc">
+<meta property="og:url" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/index.html">
+<meta property="og:site_name" content="Geek_Cat&#39;s">
+<meta property="og:description" content="This is my coc-nvim configuration file document refer Here in Github repository for more detail coc-vimrcConfiguration of my coc-nvim &amp; Vimrc Vim InstallationInstallation GuideGithub pageNeovim In">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/neovim-logo-300x87.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/junegunn/i/master/vim-plug/installer.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/u5pPY5W.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/gwFfUxq.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/ggQr1Ve.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/GAXQLao.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/yM3Fele.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/9JDaLBi.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/UQOCxyf.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/Q7EF8YI.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/zWtelNO.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/undotree_new.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/equals.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/equals.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/spaces.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/commas.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/regex.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/modes.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/tables.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/yaml.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/blockwise-visual.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/equals.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/equals.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/spaces.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/commas.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/regex.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/modes.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/tables.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/yaml.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/blockwise-visual.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/image.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/views.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/image0.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/image1.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/image2.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/image3.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/image4.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/image5.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/image6.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/screenshot.png?raw=true">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/surround_vim.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/english.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/demo.gif">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/44c292a0-1495-11e3-9ce6-dcada3f1c536.gif">
+<meta property="og:image" content="http://i.imgur.com/ONgoj.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/5cf885c18736a85017.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/76720263-471be100-6777-11ea-82c1-614627097b02.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/103474126-b8e31b00-4ddb-11eb-916b-2e2d7b2b29e0.png">
+<meta property="article:published_time" content="2021-04-15T20:50:06.000Z">
+<meta property="article:modified_time" content="2022-07-17T15:33:45.253Z">
+<meta property="article:author" content="Geek_Cat">
+<meta property="article:tag" content="vim">
+<meta property="article:tag" content="coc-nvim">
+<meta property="article:tag" content="neovim">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/neovim-logo-300x87.png">
+
+
+<link rel="canonical" href="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/","path":"2021/04/15/2021/coc-vimrc/","title":"coc-vimrc"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>coc-vimrc | Geek_Cat's</title>
+  
+
+
+
+
+<link rel="manifest" href="/manifest.json" />
+  <noscript>
+    <link rel="stylesheet" href="/en/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/en/atom.xml" title="Geek_Cat's" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/en/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Geek_Cat's</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Years may wrinkle the skin, but to give up enthusiasm wrinkles the soul</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/en/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/en/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/en/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/en/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/en/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-my-github-profile"><a href="https://github.com/zhzhzhy" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>My GitHub profile</a></li><li class="menu-item menu-item-简体中文-chinese"><a href="http://zhzhzhy.github.io/" rel="section"><i class="fa fa-language fa-fw"></i>简体中文 Chinese</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#coc-vimrc"><span class="nav-number">1.</span> <span class="nav-text">coc-vimrc</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Vim-Installation"><span class="nav-number">1.1.</span> <span class="nav-text">Vim Installation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Installation-Guide"><span class="nav-number">1.1.1.</span> <span class="nav-text">Installation Guide</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Github-page"><span class="nav-number">1.1.2.</span> <span class="nav-text">Github page</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Neovim-Installation-Optional"><span class="nav-number">1.2.</span> <span class="nav-text">Neovim Installation(Optional)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Neovim-Installation-guide"><span class="nav-number">1.2.1.</span> <span class="nav-text">Neovim Installation guide</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#coc-nvim-Installation"><span class="nav-number">1.3.</span> <span class="nav-text">coc-nvim Installation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Plug-vim-Install"><span class="nav-number">1.4.</span> <span class="nav-text">Plug.vim Install</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Installation"><span class="nav-number">1.4.1.</span> <span class="nav-text">Installation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Vim"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">Vim</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Unix"><span class="nav-number">1.4.1.1.1.</span> <span class="nav-text">Unix</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Windows-PowerShell"><span class="nav-number">1.4.1.1.2.</span> <span class="nav-text">Windows (PowerShell)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Neovim"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">Neovim</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Unix-Linux"><span class="nav-number">1.4.1.2.1.</span> <span class="nav-text">Unix, Linux</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Linux-Flatpak"><span class="nav-number">1.4.1.2.2.</span> <span class="nav-text">Linux (Flatpak)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Windows-PowerShell-1"><span class="nav-number">1.4.1.2.3.</span> <span class="nav-text">Windows (PowerShell)</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vim-amp-Neovim-configuration-How-to-use-these-scripts"><span class="nav-number">1.5.</span> <span class="nav-text">Vim &amp; Neovim configuration: How to use these scripts</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#For-Vim"><span class="nav-number">1.5.1.</span> <span class="nav-text">For Vim</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#For-Neovim"><span class="nav-number">1.5.2.</span> <span class="nav-text">For Neovim</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Neovim-Transitioning-from-Vim-nvim-from-vim"><span class="nav-number">1.6.</span> <span class="nav-text">Neovim: Transitioning from Vim (nvim-from-vim)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Plugin-explanation-amp-key-mapping"><span class="nav-number">1.7.</span> <span class="nav-text">Plugin explanation &amp; key mapping</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vim-plugins"><span class="nav-number">1.7.1.</span> <span class="nav-text">vim plugins</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#coc-nvim"><span class="nav-number">1.7.1.1.</span> <span class="nav-text">coc.nvim</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#kotlin-vim"><span class="nav-number">1.7.1.2.</span> <span class="nav-text">kotlin-vim</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#vim-visual-multi"><span class="nav-number">1.7.1.3.</span> <span class="nav-text">vim-visual-multi</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Basic-usage"><span class="nav-number">1.7.1.3.1.</span> <span class="nav-text">Basic usage:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Documentation"><span class="nav-number">1.7.1.3.2.</span> <span class="nav-text">Documentation</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Wiki"><span class="nav-number">1.7.1.3.3.</span> <span class="nav-text">Wiki</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undotree"><span class="nav-number">1.7.1.4.</span> <span class="nav-text">undotree</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Usage"><span class="nav-number">1.7.1.4.1.</span> <span class="nav-text">Usage</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#vim-easy-align"><span class="nav-number">1.7.1.5.</span> <span class="nav-text">vim-easy-align</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Demo"><span class="nav-number">1.7.1.5.1.</span> <span class="nav-text">Demo</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Using-predefined-alignment-rules"><span class="nav-number">1.7.1.5.1.1.</span> <span class="nav-text">Using predefined alignment rules</span></a></li><li class="nav-item nav-level-6"><a class="nav-link"><span class="nav-number">1.7.1.5.1.2.</span> <span class="nav-text">&#x3D;</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#lt-Space-gt"><span class="nav-number">1.7.1.5.1.3.</span> <span class="nav-text">&lt;Space&gt;</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#-1"><span class="nav-number">1.7.1.5.1.4.</span> <span class="nav-text">,</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Using-regular-expression"><span class="nav-number">1.7.1.5.1.5.</span> <span class="nav-text">Using regular expression</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Aligning-table-cells"><span class="nav-number">1.7.1.5.1.6.</span> <span class="nav-text">Aligning table cells</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Syntax-aware-alignment"><span class="nav-number">1.7.1.5.1.7.</span> <span class="nav-text">Syntax-aware alignment</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Using-blockwise-visual-mode"><span class="nav-number">1.7.1.5.1.8.</span> <span class="nav-text">Using blockwise-visual mode</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Demo-1"><span class="nav-number">1.7.1.5.2.</span> <span class="nav-text">Demo</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Using-predefined-alignment-rules-1"><span class="nav-number">1.7.1.5.2.1.</span> <span class="nav-text">Using predefined alignment rules</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#-2"><span class="nav-number">1.7.1.5.2.2.</span> <span class="nav-text">&#x3D;</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#lt-Space-gt-1"><span class="nav-number">1.7.1.5.2.3.</span> <span class="nav-text">&lt;Space&gt;</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#-3"><span class="nav-number">1.7.1.5.2.4.</span> <span class="nav-text">,</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Using-regular-expression-1"><span class="nav-number">1.7.1.5.2.5.</span> <span class="nav-text">Using regular expression</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Aligning-table-cells-1"><span class="nav-number">1.7.1.5.2.6.</span> <span class="nav-text">Aligning table cells</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Syntax-aware-alignment-1"><span class="nav-number">1.7.1.5.2.7.</span> <span class="nav-text">Syntax-aware alignment</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Using-blockwise-visual-mode-1"><span class="nav-number">1.7.1.5.2.8.</span> <span class="nav-text">Using blockwise-visual mode</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#calendar-vim"><span class="nav-number">1.7.1.6.</span> <span class="nav-text">calendar.vim</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Basic-Usage"><span class="nav-number">1.7.1.6.1.</span> <span class="nav-text">Basic Usage</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#vim-autoformat"><span class="nav-number">1.7.1.7.</span> <span class="nav-text">vim-autoformat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#vim-gitgutter"><span class="nav-number">1.7.1.8.</span> <span class="nav-text">vim-gitgutter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#vim-surround"><span class="nav-number">1.7.1.9.</span> <span class="nav-text">vim-surround</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Example"><span class="nav-number">1.7.1.9.1.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#vim-markdown-toc"><span class="nav-number">1.7.1.10.</span> <span class="nav-text">vim-markdown-toc</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Update-existing-table-of-contents"><span class="nav-number">1.7.1.10.1.</span> <span class="nav-text">Update existing table of contents</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Remove-table-of-contents"><span class="nav-number">1.7.1.10.2.</span> <span class="nav-text">Remove table of contents</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#vim-airline"><span class="nav-number">1.7.1.11.</span> <span class="nav-text">vim-airline</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Smarter-tab-line"><span class="nav-number">1.7.1.11.1.</span> <span class="nav-text">Smarter tab line</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#vim-airline-themes"><span class="nav-number">1.7.1.11.2.</span> <span class="nav-text">vim-airline-themes</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Indent-Guides"><span class="nav-number">1.7.1.12.</span> <span class="nav-text">Indent Guides</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Usage-1"><span class="nav-number">1.7.1.12.1.</span> <span class="nav-text">Usage</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#coc-nvim-extensions"><span class="nav-number">1.7.2.</span> <span class="nav-text">coc-nvim extensions</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Language-servers"><span class="nav-number">1.7.2.1.</span> <span class="nav-text">Language servers</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#coc-clangd"><span class="nav-number">1.7.2.1.1.</span> <span class="nav-text">coc-clangd</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#coc-css"><span class="nav-number">1.7.2.1.2.</span> <span class="nav-text">coc-css</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#coc-flutter"><span class="nav-number">1.7.2.1.3.</span> <span class="nav-text">coc-flutter</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#coc-html"><span class="nav-number">1.7.2.1.4.</span> <span class="nav-text">coc-html</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#coc-json"><span class="nav-number">1.7.2.1.5.</span> <span class="nav-text">coc-json</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#coc-python"><span class="nav-number">1.7.2.1.6.</span> <span class="nav-text">coc-python</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#coc-tsserver"><span class="nav-number">1.7.2.1.7.</span> <span class="nav-text">coc-tsserver</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#coc-vimlsp"><span class="nav-number">1.7.2.1.8.</span> <span class="nav-text">coc-vimlsp</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#coc-yaml"><span class="nav-number">1.7.2.1.9.</span> <span class="nav-text">coc-yaml</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Other-coc-extensions"><span class="nav-number">1.7.2.2.</span> <span class="nav-text">Other coc extensions</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#coc-marketplace"><span class="nav-number">1.7.2.2.1.</span> <span class="nav-text">coc-marketplace</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Usage-2"><span class="nav-number">1.7.2.2.1.1.</span> <span class="nav-text">Usage</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#coc-prettier"><span class="nav-number">1.7.2.2.2.</span> <span class="nav-text">coc-prettier</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Update-your-coc-settings-json-for-format-on-save"><span class="nav-number">1.7.2.2.2.1.</span> <span class="nav-text">Update your coc-settings.json for format on save</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#coc-snippets"><span class="nav-number">1.7.2.2.3.</span> <span class="nav-text">coc-snippets</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#vim-snippets"><span class="nav-number">1.7.2.2.3.1.</span> <span class="nav-text">vim-snippets</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#coc-explorer"><span class="nav-number">1.7.2.2.4.</span> <span class="nav-text">coc-explorer</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#coc-translator"><span class="nav-number">1.7.2.2.5.</span> <span class="nav-text">coc-translator</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Geek_Cat</p>
+  <div class="site-description" itemprop="description">Geek & Coder & Vimer</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/en/archives/">
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/en/categories/">
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/en/tags/">
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhzhzhy" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zhzhzhy" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/en/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/zhzhzhy" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/en/images/avatar.gif">
+      <meta itemprop="name" content="Geek_Cat">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Geek_Cat's">
+      <meta itemprop="description" content="Geek & Coder & Vimer">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="coc-vimrc | Geek_Cat's">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          coc-vimrc
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-04-15 20:50:06" itemprop="dateCreated datePublished" datetime="2021-04-15T20:50:06+00:00">2021-04-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-07-17 15:33:45" itemprop="dateModified" datetime="2022-07-17T15:33:45+00:00">2022-07-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/en/categories/coc-nvim/" itemprop="url" rel="index"><span itemprop="name">coc-nvim</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/en/categories/coc-nvim/vim/" itemprop="url" rel="index"><span itemprop="name">vim</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/en/categories/coc-nvim/vim/document/" itemprop="url" rel="index"><span itemprop="name">document</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/en/categories/coc-nvim/vim/document/%E6%96%87%E6%A1%A3/" itemprop="url" rel="index"><span itemprop="name">文档</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/en/categories/coc-nvim/vim/document/%E6%96%87%E6%A1%A3/%E4%BB%A3%E7%A0%81%E7%BC%96%E8%BE%91%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">代码编辑器</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/en/2021/04/15/2021/coc-vimrc/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/04/15/2021/coc-vimrc/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><strong>This is my coc-nvim configuration file document</strong></p>
+<p>refer <strong><a target="_blank" rel="noopener" href="https://github.com/zhzhzhy/coc-vimrc">Here</a></strong> in Github repository for more detail</p>
+<h1 id="coc-vimrc"><a href="#coc-vimrc" class="headerlink" title="coc-vimrc"></a>coc-vimrc</h1><p><strong>Configuration of my coc-nvim &amp; Vimrc</strong></p>
+<h2 id="Vim-Installation"><a href="#Vim-Installation" class="headerlink" title="Vim Installation"></a>Vim Installation</h2><h3 id="Installation-Guide"><a href="#Installation-Guide" class="headerlink" title="Installation Guide"></a><a target="_blank" rel="noopener" href="https://www.vim.org/download.php">Installation Guide</a></h3><h3 id="Github-page"><a href="#Github-page" class="headerlink" title="Github page"></a><a target="_blank" rel="noopener" href="https://github.com/vim/vim">Github page</a></h3><h2 id="Neovim-Installation-Optional"><a href="#Neovim-Installation-Optional" class="headerlink" title="Neovim Installation(Optional)"></a>Neovim Installation(Optional)</h2><p><a target="_blank" rel="noopener" href="https://neovim.io/"><img src="/en/2021/04/15/2021/coc-vimrc/neovim-logo-300x87.png" alt="Neovim"></a></p>
+<p>Neovim is a project that seeks to aggressively refactor Vim in order to:</p>
+<ul>
+<li>Simplify maintenance and encourage <a href="CONTRIBUTING.md">contributions</a></li>
+<li>Split the work between multiple developers</li>
+<li>Enable [advanced UIs] without modifications to the core</li>
+<li>Maximize <a target="_blank" rel="noopener" href="https://github.com/neovim/neovim/wiki/Plugin-UI-architecture">extensibility</a></li>
+</ul>
+<p>See the <a target="_blank" rel="noopener" href="https://github.com/neovim/neovim/wiki/Introduction">Introduction</a> wiki page and [Roadmap]<br>for more information.</p>
+<h3 id="Neovim-Installation-guide"><a href="#Neovim-Installation-guide" class="headerlink" title="Neovim Installation guide"></a>Neovim Installation guide</h3><ul>
+<li><p><a target="_blank" rel="noopener" href="https://neovim.io/">Neovim website</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/neovim/neovim/wiki/Installing-Neovim">Installation Guide</a></p>
+</li>
+</ul>
+<h2 id="coc-nvim-Installation"><a href="#coc-nvim-Installation" class="headerlink" title="coc-nvim Installation"></a>coc-nvim Installation</h2><ul>
+<li>First Install <a target="_blank" rel="noopener" href="https://github.com/neoclide/coc.nvim">coc-nvim</a><br>Don’t forget to install <code>nodejs</code> and <code>npm</code></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install nodejs npm</span><br></pre></td></tr></table></figure>
+<p>OR</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S nodejs npm</span><br></pre></td></tr></table></figure>
+
+<p>Note: If you are in China,change the <strong>npm source</strong>(Taobao registry) by following command</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm config <span class="built_in">set</span> registry https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+
+<h2 id="Plug-vim-Install"><a href="#Plug-vim-Install" class="headerlink" title="Plug.vim Install"></a><a target="_blank" rel="noopener" href="https://github.com/junegunn/vim-plug">Plug.vim</a> Install</h2><p>A minimalist Vim plugin manager.</p>
+<img src="https://raw.githubusercontent.com/junegunn/i/master/vim-plug/installer.gif" height="450">
+
+<h3 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h3><p><a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim">Download plug.vim</a><br>and put it in the “autoload” directory.</p>
+<h4 id="Vim"><a href="#Vim" class="headerlink" title="Vim"></a>Vim</h4><h5 id="Unix"><a href="#Unix" class="headerlink" title="Unix"></a>Unix</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -fLo ~/.vim/autoload/plug.vim --create-dirs \</span><br><span class="line">    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim</span><br></pre></td></tr></table></figure>
+
+<p>You can automate the process by putting the command in your Vim configuration<br>file as suggested <a target="_blank" rel="noopener" href="https://github.com/junegunn/vim-plug/wiki/tips#automatic-installation">here</a>.</p>
+<h5 id="Windows-PowerShell"><a href="#Windows-PowerShell" class="headerlink" title="Windows (PowerShell)"></a>Windows (PowerShell)</h5><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">iwr</span> <span class="literal">-useb</span> https://raw.githubusercontent.com/junegunn/vim<span class="literal">-plug</span>/master/plug.vim |`</span><br><span class="line">    <span class="built_in">ni</span> <span class="variable">$HOME</span>/vimfiles/autoload/plug.vim <span class="literal">-Force</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Neovim"><a href="#Neovim" class="headerlink" title="Neovim"></a>Neovim</h4><h5 id="Unix-Linux"><a href="#Unix-Linux" class="headerlink" title="Unix, Linux"></a>Unix, Linux</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sh -c <span class="string">&#x27;curl -fLo &quot;$&#123;XDG_DATA_HOME:-$HOME/.local/share&#125;&quot;/nvim/site/autoload/plug.vim --create-dirs \</span></span><br><span class="line"><span class="string">       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="Linux-Flatpak"><a href="#Linux-Flatpak" class="headerlink" title="Linux (Flatpak)"></a>Linux (Flatpak)</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -fLo ~/.var/app/io.neovim.nvim/data/nvim/site/autoload/plug.vim \</span><br><span class="line">    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim</span><br></pre></td></tr></table></figure>
+
+<h5 id="Windows-PowerShell-1"><a href="#Windows-PowerShell-1" class="headerlink" title="Windows (PowerShell)"></a>Windows (PowerShell)</h5><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">iwr</span> <span class="literal">-useb</span> https://raw.githubusercontent.com/junegunn/vim<span class="literal">-plug</span>/master/plug.vim |`</span><br><span class="line">    <span class="built_in">ni</span> <span class="string">&quot;<span class="variable">$</span>(@(<span class="variable">$env:XDG_DATA_HOME</span>, <span class="variable">$env:LOCALAPPDATA</span>)[<span class="variable">$null</span> -eq <span class="variable">$env:XDG_DATA_HOME</span>])/nvim-data/site/autoload/plug.vim&quot;</span> <span class="literal">-Force</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Vim-amp-Neovim-configuration-How-to-use-these-scripts"><a href="#Vim-amp-Neovim-configuration-How-to-use-these-scripts" class="headerlink" title="Vim &amp; Neovim configuration: How to use these scripts"></a>Vim &amp; Neovim configuration: How to use these scripts</h2><p><strong>Notice</strong>: These config files suit my own needs,Please <strong>DO NOT</strong> just copy this configuration folder without really understanding about it! Please, at least, read this README file!</p>
+<h3 id="For-Vim"><a href="#For-Vim" class="headerlink" title="For Vim"></a>For Vim</h3><ol>
+<li><p>After you install <code>Plug.vim</code>,copy <code>.vimrc</code> and <code>coc-settings.json</code> Scripts to <code>$HOME/</code> &amp; <code>$HOME/.vim/</code></p>
+</li>
+<li><p>Reopen <code>Vim</code></p>
+</li>
+<li><p>Wait Coc Extension installing finished</p>
+</li>
+<li><p>Execute <code>:PlugInstall</code> to Finish VIM Plugin install</p>
+</li>
+<li><p>Configure the rest components</p>
+</li>
+</ol>
+<h3 id="For-Neovim"><a href="#For-Neovim" class="headerlink" title="For Neovim"></a>For Neovim</h3><ol>
+<li>After you install <code>Plug.vim</code>,copy <code>init.vim</code> to <code>$HOME/.config/nvim/</code></li>
+<li>Reopen <code>Neovim</code></li>
+</ol>
+<h2 id="Neovim-Transitioning-from-Vim-nvim-from-vim"><a href="#Neovim-Transitioning-from-Vim-nvim-from-vim" class="headerlink" title="Neovim: Transitioning from Vim (nvim-from-vim)"></a>Neovim: Transitioning from Vim (<em>nvim-from-vim</em>)</h2><p><em>nvim-from-vim</em></p>
+<ol>
+<li>To start the transition, create your <a target="_blank" rel="noopener" href="https://neovim.io/doc/user/init.html">init.vim</a> (user <a target="_blank" rel="noopener" href="https://neovim.io/doc/user/starting.html#config">config</a>) file:</li>
+</ol>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">:<span class="keyword">call</span> <span class="built_in">mkdir</span>(stdpath(<span class="string">&#x27;config&#x27;</span>), <span class="string">&#x27;p&#x27;</span>)</span><br><span class="line">:<span class="keyword">exe</span> <span class="string">&#x27;edit &#x27;</span>.stdpath(<span class="string">&#x27;config&#x27;</span>).<span class="string">&#x27;/init.vim&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>Add these contents to the file:</li>
+</ol>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> runtimepath^=~/.<span class="keyword">vim</span> runtimepath+=~/.<span class="keyword">vim</span>/after</span><br><span class="line"><span class="keyword">let</span> &amp;packpath = &amp;runtimepath</span><br><span class="line"><span class="keyword">source</span> ~/.vimrc</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>Restart Nvim, your existing Vim <a target="_blank" rel="noopener" href="https://neovim.io/doc/user/starting.html#config">config</a> will be loaded.</li>
+</ol>
+<p>See |<a target="_blank" rel="noopener" href="https://neovim.io/doc/user/provider.html#provider-python">provider-python</a>| and |<a target="_blank" rel="noopener" href="https://neovim.io/doc/user/provider.html#provider-clipboard">provider-clipboard</a>| for additional software you<br>might need to use some features.</p>
+<p>Your Vim configuration might not be entirely Nvim-compatible.<br>See |<a target="_blank" rel="noopener" href="https://neovim.io/doc/user/vim_diff.html#vim-differences">vim-differences</a>| for the full <a target="_blank" rel="noopener" href="https://neovim.io/doc/user/eval.html#list">list</a> of changes.</p>
+<p>The |<a target="_blank" rel="noopener" href="https://neovim.io/doc/user/vim_diff.html#'ttymouse'">‘ttymouse’</a>| option, for example, was removed from Nvim (mouse support<br>should work without <a target="_blank" rel="noopener" href="https://neovim.io/doc/user/motion.html#it">it</a>). If you use the same |<a target="_blank" rel="noopener" href="https://neovim.io/doc/user/starting.html#vimrc">vimrc</a>| for Vim and Nvim,<br>consider guarding |<a target="_blank" rel="noopener" href="https://neovim.io/doc/user/vim_diff.html#'ttymouse'">‘ttymouse’</a>| in your configuration like so:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> !has(<span class="string">&#x27;nvim&#x27;</span>)</span><br><span class="line">    <span class="keyword">set</span> ttymouse=xterm2</span><br><span class="line"><span class="keyword">endif</span></span><br></pre></td></tr></table></figure>
+<p>Conversely, if you have Nvim specific configuration items, you could do<br>this:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="built_in">has</span>(<span class="string">&#x27;nvim&#x27;</span>)</span><br><span class="line">    tnoremap <span class="symbol">&lt;Esc&gt;</span> &lt;C-\&gt;<span class="symbol">&lt;C-n&gt;</span></span><br><span class="line"><span class="keyword">endif</span></span><br></pre></td></tr></table></figure>
+<p>For a more granular approach use YXXYexists()|:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="built_in">exists</span>(<span class="string">&#x27;:tnoremap&#x27;</span>)</span><br><span class="line">    tnoremap <span class="symbol">&lt;Esc&gt;</span> &lt;C-\&gt;<span class="symbol">&lt;C-n&gt;</span></span><br><span class="line"><span class="keyword">endif</span></span><br></pre></td></tr></table></figure>
+<p>Now you should be able to explore Nvim more comfortably. Check |<a target="_blank" rel="noopener" href="https://neovim.io/doc/user/vim_diff.html#nvim-features">nvim-features</a>| for more information.</p>
+<h2 id="Plugin-explanation-amp-key-mapping"><a href="#Plugin-explanation-amp-key-mapping" class="headerlink" title="Plugin explanation &amp; key mapping"></a>Plugin explanation &amp; key mapping</h2><h3 id="vim-plugins"><a href="#vim-plugins" class="headerlink" title="vim plugins"></a>vim plugins</h3><h4 id="coc-nvim"><a href="#coc-nvim" class="headerlink" title="coc.nvim"></a><a target="_blank" rel="noopener" href="https://github.com/neoclide/coc.nvim">coc.nvim</a></h4><p>Follow <a href="#installation">Installation</a></p>
+<h4 id="kotlin-vim"><a href="#kotlin-vim" class="headerlink" title="kotlin-vim"></a><a target="_blank" rel="noopener" href="https://github.com/udalov/kotlin-vim">kotlin-vim</a></h4><h4 id="vim-visual-multi"><a href="#vim-visual-multi" class="headerlink" title="vim-visual-multi"></a><a target="_blank" rel="noopener" href="https://github.com/mg979/vim-visual-multi">vim-visual-multi</a></h4><table>
+<thead>
+<tr>
+<th align="center">Shortcut</th>
+<th align="center">Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>Ctrl</code>+<code>n</code></td>
+<td align="center"><strong>Select next key (multiple cursors)</strong></td>
+</tr>
+<tr>
+<td align="center"><code>q</code></td>
+<td align="center"><strong>Deselect the current keys (multiple cursors)</strong></td>
+</tr>
+<tr>
+<td align="center"><code>N</code></td>
+<td align="center">Select the previous key</td>
+</tr>
+<tr>
+<td align="center"><code>n</code></td>
+<td align="center">Select the next key</td>
+</tr>
+<tr>
+<td align="center"><code>Esc</code></td>
+<td align="center">Quit mutiple cursors</td>
+</tr>
+</tbody></table>
+<p>To minimize chances for conflicts, a leader that is specific to VM is defined. The default is <code>\\</code> (two backslashes), but you can change it by setting:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let g:VM_leader = &#123;your VM leader&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="Basic-usage"><a href="#Basic-usage" class="headerlink" title="Basic usage:"></a>Basic usage:</h5><ul>
+<li>select words with <kbd>Ctrl-N</kbd> (like <code>Ctrl-d</code> in Sublime Text/VS Code)</li>
+<li>create cursors vertically with <kbd>Ctrl-Down</kbd>/<kbd>Ctrl-Up</kbd></li>
+<li>select one character at a time with <kbd>Shift-Arrows</kbd></li>
+<li>press <kbd>n</kbd>/<kbd>N</kbd> to get next/previous occurrence</li>
+<li>press <kbd>[</kbd>/<kbd>]</kbd> to select next/previous cursor</li>
+<li>press <kbd>q</kbd> to skip current and get next occurrence</li>
+<li>press <kbd>Q</kbd> to remove current cursor/selection</li>
+<li>start insert mode with <kbd>i</kbd>,<kbd>a</kbd>,<kbd>I</kbd>,<kbd>A</kbd></li>
+</ul>
+<p>Two main modes:</p>
+<ul>
+<li>in <em>cursor mode</em> commands work as they would in normal mode</li>
+<li>in <em>extend mode</em> commands work as they would in visual mode</li>
+<li>press <kbd>Tab</kbd> to switch between «cursor» and «extend» mode</li>
+</ul>
+<p>Most vim commands work as expected (motions, <kbd>r</kbd> to replace characters, <kbd>~</kbd> to change case, etc). Additionally you can:</p>
+<ul>
+<li>run macros/ex/normal commands at cursors</li>
+<li>align cursors</li>
+<li>transpose selections</li>
+<li>add patterns with regex, or from visual mode</li>
+</ul>
+<p>And more… of course, you can enter insert mode and autocomplete will work.</p>
+<h5 id="Documentation"><a href="#Documentation" class="headerlink" title="Documentation"></a>Documentation</h5><pre><code>:help visual-multi
+</code></pre>
+<p>For some specific topic it’s often:</p>
+<pre><code>:help vm-some-topic
+</code></pre>
+<h5 id="Wiki"><a href="#Wiki" class="headerlink" title="Wiki"></a><a target="_blank" rel="noopener" href="https://github.com/mg979/vim-visual-multi/wiki">Wiki</a></h5><p>The wiki was the first documentation for the plugin, but many pictures are<br>outdated and contain wrong mappings. Still, you can take a look.</p>
+<p>You could read at least the <a target="_blank" rel="noopener" href="https://github.com/mg979/vim-visual-multi/wiki/Quick-start">Quick Start</a>.</p>
+<p> Quick refer the <a target="_blank" rel="noopener" href="https://github.com/mg979/vim-visual-multi/wiki/Mappings">Key mapping</a></p>
+<p>Insert mode with autocomplete, alignment (mappings in pic have changed, don’t trust them)</p>
+<p><img src="/en/2021/04/15/2021/coc-vimrc/u5pPY5W.gif" alt="Imgur"></p>
+<hr>
+<p>Undo/Redo edits and selections</p>
+<p><img src="/en/2021/04/15/2021/coc-vimrc/gwFfUxq.gif" alt="Imgur"></p>
+<hr>
+<p>Alternate cursor/extend mode, motions (even %), reverse direction (as in visual mode) and extend from the back. At any time you can switch from extend to cursor mode and viceversa.</p>
+<p><img src="/en/2021/04/15/2021/coc-vimrc/ggQr1Ve.gif" alt="Imgur"></p>
+<hr>
+<p>Select inside/around brackets/quotes/etc:</p>
+<p><img src="/en/2021/04/15/2021/coc-vimrc/GAXQLao.gif" alt="Imgur"></p>
+<hr>
+<p>Select operator, here shown with ‘wellle/targets.vim’ plugin: sib, sia, saa + selection shift</p>
+<p><img src="/en/2021/04/15/2021/coc-vimrc/yM3Fele.gif" alt="Imgur"></p>
+<hr>
+<p>Synched column transposition</p>
+<p><img src="/en/2021/04/15/2021/coc-vimrc/9JDaLBi.gif" alt="Imgur"></p>
+<hr>
+<p>Unsynched transposition (cycle all regions, also in different lines)</p>
+<p><img src="/en/2021/04/15/2021/coc-vimrc/UQOCxyf.gif" alt="Imgur"></p>
+<hr>
+<p>Shift regions left and right (M-S-&lt;&gt;)</p>
+<p><img src="/en/2021/04/15/2021/coc-vimrc/Q7EF8YI.gif" alt="Imgur"></p>
+<hr>
+<p>Find words under cursor, add new words (patterns stack), navigate regions, skip them, add regions with regex.</p>
+<p><img src="/en/2021/04/15/2021/coc-vimrc/zWtelNO.gif" alt="Imgur"></p>
+<h4 id="undotree"><a href="#undotree" class="headerlink" title="undotree"></a><a target="_blank" rel="noopener" href="https://github.com/mbbill/undotree">undotree</a></h4><p><img src="/en/2021/04/15/2021/coc-vimrc/undotree_new.png"></p>
+<h5 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h5><table>
+<thead>
+<tr>
+<th align="center">Shortcut</th>
+<th align="center">Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>:UndotreeToggle</code> OR <code>F5</code></td>
+<td align="center">toggle the undo-tree panel.</td>
+</tr>
+<tr>
+<td align="center"><code>:redo</code> OR <code>&lt;ctrl-r&gt;</code></td>
+<td align="center">restore</td>
+</tr>
+<tr>
+<td align="center"><code>[ number ]</code></td>
+<td align="center">marks the most recent change</td>
+</tr>
+</tbody></table>
+<ol>
+<li>Use <code>:UndotreeToggle</code> to toggle the undo-tree panel. You may want to map this command to whatever hotkey by adding the following line to your vimrc, take <code>F5</code> for example.<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nnoremap &lt;F5&gt; :UndotreeToggle&lt;CR&gt;</span><br></pre></td></tr></table></figure></li>
+<li>Markers<ul>
+<li>Every change has a sequence number and it is displayed before timestamps.</li>
+<li>The current state is marked as <code>&gt; number &lt;</code>.</li>
+<li>The next state which will be restored by <code>:redo`:redo` or </code><ctrl-r><code>&lt;ctrl-r&gt;</code> is marked as <code>&#123; number &#125;</code>.</li>
+<li>The <code>[ number ]</code> marks the most recent change.</li>
+<li>The undo history is sorted by timestamps.</li>
+<li>Saved changes are marked as <code>s</code> and the big <code>S</code> indicates the most recent saved change.</li>
+</ul>
+</li>
+<li>Press <code>?</code> in undotree window for quick help.</li>
+<li>Persistent undo<ul>
+<li>Usually I would like to store the undo files in a seperate place like below.</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">if has(&quot;persistent_undo&quot;)</span><br><span class="line">   let target_path = expand(&#x27;~/.undodir&#x27;)</span><br><span class="line"></span><br><span class="line">    &quot; create the directory and any parent directories</span><br><span class="line">    &quot; if the location does not exist.</span><br><span class="line">    if !isdirectory(target_path)</span><br><span class="line">        call mkdir(target_path, &quot;p&quot;, 0700)</span><br><span class="line">    endif</span><br><span class="line"></span><br><span class="line">    let &amp;undodir=target_path</span><br><span class="line">    set undofile</span><br><span class="line">endif</span><br></pre></td></tr></table></figure>
+
+<h4 id="vim-easy-align"><a href="#vim-easy-align" class="headerlink" title="vim-easy-align"></a><a target="_blank" rel="noopener" href="https://github.com/junegunn/vim-easy-align">vim-easy-align</a></h4><p><strong>A simple, easy-to-use Vim alignment plugin.</strong></p>
+<p><img src="/en/2021/04/15/2021/coc-vimrc/equals.gif"></p>
+<p><code>ga</code> + <strong>symbol</strong> in normal or visual mode to align text based on <strong>symbol</strong></p>
+<ul>
+<li>with the following lines of text,</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apple   =red</span><br><span class="line">grass+=green</span><br><span class="line">sky-=   blue</span><br></pre></td></tr></table></figure>
+
+<p>try these commands:</p>
+<ul>
+<li><code>vipga=</code><ul>
+<li><code>v</code>isual-select <code>i</code>nner <code>p</code>aragraph</li>
+<li>Start EasyAlign command (<code>ga</code>)</li>
+<li>Align around <code>=</code></li>
+</ul>
+</li>
+<li><code>gaip=</code><ul>
+<li>Start EasyAlign command (<code>ga</code>) for <code>i</code>nner <code>p</code>aragraph</li>
+<li>Align around <code>=</code></li>
+</ul>
+</li>
+</ul>
+<h5 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h5><h6 id="Using-predefined-alignment-rules"><a href="#Using-predefined-alignment-rules" class="headerlink" title="Using predefined alignment rules"></a>Using predefined alignment rules</h6><p>An <em>alignment rule</em> is a predefined set of options for common alignment tasks,<br>which is identified by a single character, such as <code>&lt;Space&gt;</code>, <code>=</code>, <code>:</code>, <code>.</code>,<br><code>|</code>, <code>&amp;</code>, <code>#</code>, and <code>,</code>.</p>
+<h6 id=""><a href="#" class="headerlink" title="="></a><code>=</code></h6><p><img src="/en/2021/04/15/2021/coc-vimrc/equals.gif"></p>
+<ul>
+<li><code>=</code> Around the 1st occurrences</li>
+<li><code>2=</code> Around the 2nd occurrences</li>
+<li><code>*=</code> Around all occurrences</li>
+<li><code>**=</code> Left/Right alternating alignment around all occurrences</li>
+<li><code>&lt;Enter&gt;</code> Switching between left/right/center alignment modes</li>
+</ul>
+<h6 id="lt-Space-gt"><a href="#lt-Space-gt" class="headerlink" title="&lt;Space&gt;"></a><code>&lt;Space&gt;</code></h6><p><img src="/en/2021/04/15/2021/coc-vimrc/spaces.gif"></p>
+<ul>
+<li><code>&lt;Space&gt;</code> Around the 1st occurrences of whitespaces</li>
+<li><code>2&lt;Space&gt;</code> Around the 2nd occurrences</li>
+<li><code>-&lt;Space&gt;</code> Around the last occurrences</li>
+<li><code>&lt;Enter&gt;&lt;Enter&gt;2&lt;Space&gt;</code> Center-alignment around the 2nd occurrences</li>
+</ul>
+<h6 id="-1"><a href="#-1" class="headerlink" title=","></a><code>,</code></h6><p><img src="/en/2021/04/15/2021/coc-vimrc/commas.gif"></p>
+<ul>
+<li>The predefined comma-rule places a comma right next to the preceding token<br>without margin (<code>&#123;&#39;stick_to_left&#39;: 1, &#39;left_margin&#39;: 0&#125;</code>)</li>
+<li>You can change it with <code>&lt;Right&gt;</code> arrow</li>
+</ul>
+<h6 id="Using-regular-expression"><a href="#Using-regular-expression" class="headerlink" title="Using regular expression"></a>Using regular expression</h6><p><img src="/en/2021/04/15/2021/coc-vimrc/regex.gif"></p>
+<p>You can use an arbitrary regular expression by</p>
+<ul>
+<li>pressing <code>&lt;Ctrl-X&gt;</code> in interactive mode</li>
+<li>or using <code>:EasyAlign /REGEX/</code> command in visual mode or in normal mode with<br>a range (e.g. <code>:%</code>)</li>
+</ul>
+<p>Different ways to start</p>
+<p><img src="/en/2021/04/15/2021/coc-vimrc/modes.gif"></p>
+<p>This demo shows how you can start interactive mode with visual selection or use<br>non-interactive <code>:EasyAlign</code> command.</p>
+<h6 id="Aligning-table-cells"><a href="#Aligning-table-cells" class="headerlink" title="Aligning table cells"></a>Aligning table cells</h6><p><img src="/en/2021/04/15/2021/coc-vimrc/tables.gif"></p>
+<p>Check out various alignment options and “live interactive mode”.</p>
+<h6 id="Syntax-aware-alignment"><a href="#Syntax-aware-alignment" class="headerlink" title="Syntax-aware alignment"></a>Syntax-aware alignment</h6><p><img src="/en/2021/04/15/2021/coc-vimrc/yaml.gif"></p>
+<p>Delimiters in strings and comments are ignored by default.</p>
+<h6 id="Using-blockwise-visual-mode"><a href="#Using-blockwise-visual-mode" class="headerlink" title="Using blockwise-visual mode"></a>Using blockwise-visual mode</h6><p><img src="/en/2021/04/15/2021/coc-vimrc/blockwise-visual.gif"></p>
+<p><strong>A simple, easy-to-use Vim alignment plugin.</strong></p>
+<p><img src="/en/2021/04/15/2021/coc-vimrc/equals.gif"></p>
+<p><code>ga</code> + <strong>symbol</strong> in normal or visual mode to align text based on <strong>symbol</strong></p>
+<ul>
+<li>with the following lines of text,</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apple   =red</span><br><span class="line">grass+=green</span><br><span class="line">sky-=   blue</span><br></pre></td></tr></table></figure>
+
+<p>try these commands:</p>
+<ul>
+<li><code>vipga=</code><ul>
+<li><code>v</code>isual-select <code>i</code>nner <code>p</code>aragraph</li>
+<li>Start EasyAlign command (<code>ga</code>)</li>
+<li>Align around <code>=</code></li>
+</ul>
+</li>
+<li><code>gaip=</code><ul>
+<li>Start EasyAlign command (<code>ga</code>) for <code>i</code>nner <code>p</code>aragraph</li>
+<li>Align around <code>=</code></li>
+</ul>
+</li>
+</ul>
+<h5 id="Demo-1"><a href="#Demo-1" class="headerlink" title="Demo"></a>Demo</h5><h6 id="Using-predefined-alignment-rules-1"><a href="#Using-predefined-alignment-rules-1" class="headerlink" title="Using predefined alignment rules"></a>Using predefined alignment rules</h6><p>An <em>alignment rule</em> is a predefined set of options for common alignment tasks,<br>which is identified by a single character, such as <code>&lt;Space&gt;</code>, <code>=</code>, <code>:</code>, <code>.</code>,<br><code>|</code>, <code>&amp;</code>, <code>#</code>, and <code>,</code>.</p>
+<h6 id="-2"><a href="#-2" class="headerlink" title="="></a><code>=</code></h6><p><img src="/en/2021/04/15/2021/coc-vimrc/equals.gif"></p>
+<ul>
+<li><code>=</code> Around the 1st occurrences</li>
+<li><code>2=</code> Around the 2nd occurrences</li>
+<li><code>*=</code> Around all occurrences</li>
+<li><code>**=</code> Left/Right alternating alignment around all occurrences</li>
+<li><code>&lt;Enter&gt;</code> Switching between left/right/center alignment modes</li>
+</ul>
+<h6 id="lt-Space-gt-1"><a href="#lt-Space-gt-1" class="headerlink" title="&lt;Space&gt;"></a><code>&lt;Space&gt;</code></h6><p><img src="/en/2021/04/15/2021/coc-vimrc/spaces.gif"></p>
+<ul>
+<li><code>&lt;Space&gt;</code> Around the 1st occurrences of whitespaces</li>
+<li><code>2&lt;Space&gt;</code> Around the 2nd occurrences</li>
+<li><code>-&lt;Space&gt;</code> Around the last occurrences</li>
+<li><code>&lt;Enter&gt;&lt;Enter&gt;2&lt;Space&gt;</code> Center-alignment around the 2nd occurrences</li>
+</ul>
+<h6 id="-3"><a href="#-3" class="headerlink" title=","></a><code>,</code></h6><p><img src="/en/2021/04/15/2021/coc-vimrc/commas.gif"></p>
+<ul>
+<li>The predefined comma-rule places a comma right next to the preceding token<br>without margin (<code>&#123;&#39;stick_to_left&#39;: 1, &#39;left_margin&#39;: 0&#125;</code>)</li>
+<li>You can change it with <code>&lt;Right&gt;</code> arrow</li>
+</ul>
+<h6 id="Using-regular-expression-1"><a href="#Using-regular-expression-1" class="headerlink" title="Using regular expression"></a>Using regular expression</h6><p><img src="/en/2021/04/15/2021/coc-vimrc/regex.gif"></p>
+<p>You can use an arbitrary regular expression by</p>
+<ul>
+<li>pressing <code>&lt;Ctrl-X&gt;</code> in interactive mode</li>
+<li>or using <code>:EasyAlign /REGEX/</code> command in visual mode or in normal mode with<br>a range (e.g. <code>:%</code>)</li>
+</ul>
+<p>Different ways to start</p>
+<p><img src="/en/2021/04/15/2021/coc-vimrc/modes.gif"></p>
+<p>This demo shows how you can start interactive mode with visual selection or use<br>non-interactive <code>:EasyAlign</code> command.</p>
+<h6 id="Aligning-table-cells-1"><a href="#Aligning-table-cells-1" class="headerlink" title="Aligning table cells"></a>Aligning table cells</h6><p><img src="/en/2021/04/15/2021/coc-vimrc/tables.gif"></p>
+<p>Check out various alignment options and “live interactive mode”.</p>
+<h6 id="Syntax-aware-alignment-1"><a href="#Syntax-aware-alignment-1" class="headerlink" title="Syntax-aware alignment"></a>Syntax-aware alignment</h6><p><img src="/en/2021/04/15/2021/coc-vimrc/yaml.gif"></p>
+<p>Delimiters in strings and comments are ignored by default.</p>
+<h6 id="Using-blockwise-visual-mode-1"><a href="#Using-blockwise-visual-mode-1" class="headerlink" title="Using blockwise-visual mode"></a>Using blockwise-visual mode</h6><p><img src="/en/2021/04/15/2021/coc-vimrc/blockwise-visual.gif"></p>
+<p>You can limit the scope with blockwise-visual mode.</p>
+<h4 id="calendar-vim"><a href="#calendar-vim" class="headerlink" title="calendar.vim"></a><a target="_blank" rel="noopener" href="https://github.com/itchyny/calendar.vim">calendar.vim</a></h4><p><img src="/en/2021/04/15/2021/coc-vimrc/image.png" alt="calendar.vim"></p>
+<p>Press E key to view the event list, and T key to view the task list.<br>Also, press ? key to view a quick help.</p>
+<p><img src="/en/2021/04/15/2021/coc-vimrc/views.png" alt="calendar.vim"></p>
+<h5 id="Basic-Usage"><a href="#Basic-Usage" class="headerlink" title="Basic Usage"></a>Basic Usage</h5><pre><code>:Calendar
+</code></pre>
+<p><img src="/en/2021/04/15/2021/coc-vimrc/image0.png" alt="calendar.vim"></p>
+<pre><code>:Calendar 2000 1 1
+</code></pre>
+<p><img src="/en/2021/04/15/2021/coc-vimrc/image1.png" alt="calendar.vim"></p>
+<pre><code>:Calendar -view=year
+</code></pre>
+<p><img src="/en/2021/04/15/2021/coc-vimrc/image2.png" alt="calendar.vim"></p>
+<pre><code>:Calendar -view=year -split=vertical -width=27
+</code></pre>
+<p><img src="/en/2021/04/15/2021/coc-vimrc/image3.png" alt="calendar.vim"></p>
+<pre><code>:Calendar -view=year -split=horizontal -position=below -height=12
+</code></pre>
+<p><img src="/en/2021/04/15/2021/coc-vimrc/image4.png" alt="calendar.vim"></p>
+<pre><code>:Calendar -first_day=monday
+</code></pre>
+<p><img src="/en/2021/04/15/2021/coc-vimrc/image5.png" alt="calendar.vim"></p>
+<pre><code>:Calendar -view=clock
+</code></pre>
+<p><img src="/en/2021/04/15/2021/coc-vimrc/image6.png" alt="calendar.vim"></p>
+<p>You can switch between views with &lt; and &gt; keys.</p>
+<h4 id="vim-autoformat"><a href="#vim-autoformat" class="headerlink" title="vim-autoformat"></a><a target="_blank" rel="noopener" href="https://github.com/Chiel92/vim-autoformat">vim-autoformat</a></h4><p>For convenience it is recommended that you assign a key for this, like so:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">noremap</span> <span class="symbol">&lt;F3&gt;</span> :Autoformat<span class="symbol">&lt;CR&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>Basic usage: <code>:Autoformat</code> OR <code>F3</code></p>
+<h4 id="vim-gitgutter"><a href="#vim-gitgutter" class="headerlink" title="vim-gitgutter"></a><a target="_blank" rel="noopener" href="https://github.com/airblade/vim-gitgutter">vim-gitgutter</a></h4><p>A Vim plugin which shows a git diff in the sign column. It shows which lines have been added, modified, or removed. You can also preview, stage, and undo individual hunks; and stage partial hunks. The plugin also provides a hunk text object.<br><img src="/en/screenshot.png?raw=true"></p>
+<p>In the screenshot above you can see:</p>
+<ul>
+<li>Lines 183-184 are new.</li>
+<li>Lines 186-187 have been modified.</li>
+<li>The preview for the modified lines highlights changed regions within the line.</li>
+</ul>
+<h4 id="vim-surround"><a href="#vim-surround" class="headerlink" title="vim-surround"></a><a target="_blank" rel="noopener" href="https://github.com/tpope/vim-surround">vim-surround</a></h4><p><img src="/en/2021/04/15/2021/coc-vimrc/surround_vim.gif"></p>
+<h5 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h5><p>Press <code>cs&quot;&#39;</code> inside</p>
+<pre><code>&quot;Hello world!&quot;
+</code></pre>
+<p>to change it to</p>
+<pre><code>&#39;Hello world!&#39;
+</code></pre>
+<p>Now press <code>cs&#39;&lt;q&gt;</code> to change it to</p>
+<pre><code>&lt;q&gt;Hello world!&lt;/q&gt;
+</code></pre>
+<p>To go full circle, press <code>cst&quot;</code> to get</p>
+<pre><code>&quot;Hello world!&quot;
+</code></pre>
+<p>To remove the delimiters entirely, press <code>ds&quot;</code>.</p>
+<pre><code>Hello world!
+</code></pre>
+<p>Now with the cursor on “Hello”, press <code>ysiw]</code> (<code>iw</code> is a text object).</p>
+<pre><code>[Hello] world!
+</code></pre>
+<p>Let’s make that braces and add some space (use <code>&#125;</code> instead of <code>&#123;</code> for no<br>space): <code>cs]&#123;</code></p>
+<pre><code>&#123; Hello &#125; world!
+</code></pre>
+<p>Now wrap the entire line in parentheses with <code>yssb</code> or <code>yss)</code>.</p>
+<pre><code>(&#123; Hello &#125; world!)
+</code></pre>
+<p>Revert to the original text: <code>ds&#123;ds)</code></p>
+<pre><code>Hello world!
+</code></pre>
+<p>Emphasize hello: <code>ysiw&lt;em&gt;</code></p>
+<pre><code>&lt;em&gt;Hello&lt;/em&gt; world!
+</code></pre>
+<p>Finally, let’s try out visual mode. Press a capital V (for linewise<br>visual mode) followed by <code>S&lt;p class=&quot;important&quot;&gt;</code>.</p>
+<pre><code>&lt;p class=&quot;important&quot;&gt;
+  &lt;em&gt;Hello&lt;/em&gt; world!
+&lt;/p&gt;
+</code></pre>
+<h4 id="vim-markdown-toc"><a href="#vim-markdown-toc" class="headerlink" title="vim-markdown-toc"></a><a target="_blank" rel="noopener" href="https://github.com/mzlogin/vim-markdown-toc">vim-markdown-toc</a></h4><p><img src="/en/2021/04/15/2021/coc-vimrc/english.gif" alt="gif"></p>
+<ul>
+<li><p>Generate table of contents for Markdown files.</p>
+<p>Supported Markdown parsers:</p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> GFM (GitHub Flavored Markdown)</li>
+<li><input checked="" disabled="" type="checkbox"> GitLab</li>
+<li><input checked="" disabled="" type="checkbox"> Redcarpet</li>
+</ul>
+</li>
+<li><p>Update existing table of contents.</p>
+</li>
+<li><p>Auto update existing table of contents on save.</p>
+</li>
+</ul>
+<ol>
+<li><p><code>:GenTocGFM</code></p>
+<p> Generate table of contents in <a target="_blank" rel="noopener" href="https://github.github.com/gfm/">GFM</a> link style.</p>
+<p> This command is suitable for Markdown files in GitHub repositories, like <code>README.md</code>, and Markdown files for GitBook.</p>
+</li>
+<li><p><code>:GenTocRedcarpet</code></p>
+<p> Generate table of contents in <a target="_blank" rel="noopener" href="https://github.com/vmg/redcarpet">Redcarpet</a> link style.</p>
+<p> This command is suitable for Jekyll or anywhere else use Redcarpet as its Markdown parser.</p>
+</li>
+<li><p><code>:GenTocGitLab</code></p>
+<p> Generate table of contents in <a target="_blank" rel="noopener" href="https://docs.gitlab.com/ee/user/markdown.html">GitLab</a> link style.</p>
+<p> This command is suitable for GitLab repository and wiki.</p>
+</li>
+<li><p><code>:GenTocMarked</code></p>
+<p> Generate table of contents for <a target="_blank" rel="noopener" href="https://github.com/iamcco/markdown-preview.vim">iamcco/markdown-preview.vim</a> which use <a target="_blank" rel="noopener" href="https://github.com/markedjs/marked">Marked</a> markdown parser.</p>
+</li>
+</ol>
+<p>You can view <a target="_blank" rel="noopener" href="http://mazhuang.org/2015/12/05/diff-between-gfm-and-redcarpet/">here</a> to know differences between <em>GFM</em> and <em>Redcarpet</em> style toc links.</p>
+<h5 id="Update-existing-table-of-contents"><a href="#Update-existing-table-of-contents" class="headerlink" title="Update existing table of contents"></a>Update existing table of contents</h5><p>Generally you don’t need to do this manually, existing table of contents will auto update on save by default.</p>
+<p>The <code>:UpdateToc</code> command, which is designed to update toc manually, can only work when <code>g:vmt_auto_update_on_save</code> turned off, and keep insert fence.</p>
+<h5 id="Remove-table-of-contents"><a href="#Remove-table-of-contents" class="headerlink" title="Remove table of contents"></a>Remove table of contents</h5><p><code>:RemoveToc</code> command will do this for you, just remember keep insert fence option by default.</p>
+<h4 id="vim-airline"><a href="#vim-airline" class="headerlink" title="vim-airline"></a><a target="_blank" rel="noopener" href="https://github.com/vim-airline/vim-airline">vim-airline</a></h4><p>Lean &amp; mean status/tabline for vim that’s light as air.</p>
+<p><img src="/en/2021/04/15/2021/coc-vimrc/demo.gif" alt="img"></p>
+<p>When the plugin is correctly loaded, there will be a nice statusline at the<br>bottom of each vim window.</p>
+<h5 id="Smarter-tab-line"><a href="#Smarter-tab-line" class="headerlink" title="Smarter tab line"></a>Smarter tab line</h5><p>Automatically displays all buffers when there’s only one tab open.</p>
+<p><img src="/en/2021/04/15/2021/coc-vimrc/44c292a0-1495-11e3-9ce6-dcada3f1c536.gif" alt="tabline"></p>
+<p>This is disabled by default; add the following to your vimrc to enable the extension:</p>
+<pre><code>let g:airline#extensions#tabline#enabled = 1
+</code></pre>
+<h5 id="vim-airline-themes"><a href="#vim-airline-themes" class="headerlink" title="vim-airline-themes"></a><a target="_blank" rel="noopener" href="https://github.com/vim-airline/vim-airline-themes">vim-airline-themes</a></h5><h4 id="Indent-Guides"><a href="#Indent-Guides" class="headerlink" title="Indent Guides"></a><a target="_blank" rel="noopener" href="https://github.com/nathanaelkane/vim-indent-guides">Indent Guides</a></h4><p>Indent Guides is a plugin for visually displaying indent levels in Vim.</p>
+<img src="http://i.imgur.com/ONgoj.png" width="448" height="448" alt="" />
+
+<h5 id="Usage-1"><a href="#Usage-1" class="headerlink" title="Usage"></a>Usage</h5><p>The default mapping to toggle the plugin is <code>&lt;Leader&gt;ig</code>.</p>
+<p>You can also use the following commands inside Vim:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">:IndentGuidesEnable</span><br><span class="line">:IndentGuidesDisable</span><br><span class="line">:IndentGuidesToggle</span><br></pre></td></tr></table></figure>
+
+<p>If you would like to have indent guides enabled by default, you can add the following to your <code>~/.vimrc</code>:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">g:indent_guides_enable_on_vim_startup</span> = <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="coc-nvim-extensions"><a href="#coc-nvim-extensions" class="headerlink" title="coc-nvim extensions"></a>coc-nvim extensions</h3><h4 id="Language-servers"><a href="#Language-servers" class="headerlink" title="Language servers"></a>Language servers</h4><h5 id="coc-clangd"><a href="#coc-clangd" class="headerlink" title="coc-clangd"></a><a target="_blank" rel="noopener" href="https://github.com/clangd/coc-clangd">coc-clangd</a></h5><h5 id="coc-css"><a href="#coc-css" class="headerlink" title="coc-css"></a><a target="_blank" rel="noopener" href="https://github.com/neoclide/coc-css">coc-css</a></h5><h5 id="coc-flutter"><a href="#coc-flutter" class="headerlink" title="coc-flutter"></a><a target="_blank" rel="noopener" href="https://github.com/iamcco/coc-flutter">coc-flutter</a></h5><h5 id="coc-html"><a href="#coc-html" class="headerlink" title="coc-html"></a><a target="_blank" rel="noopener" href="https://github.com/neoclide/coc-html">coc-html</a></h5><h5 id="coc-json"><a href="#coc-json" class="headerlink" title="coc-json"></a><a target="_blank" rel="noopener" href="https://github.com/neoclide/coc-json">coc-json</a></h5><h5 id="coc-python"><a href="#coc-python" class="headerlink" title="coc-python"></a><a target="_blank" rel="noopener" href="https://github.com/neoclide/coc-python">coc-python</a></h5><h5 id="coc-tsserver"><a href="#coc-tsserver" class="headerlink" title="coc-tsserver"></a><a target="_blank" rel="noopener" href="https://github.com/neoclide/coc-tsserver">coc-tsserver</a></h5><h5 id="coc-vimlsp"><a href="#coc-vimlsp" class="headerlink" title="coc-vimlsp"></a><a target="_blank" rel="noopener" href="https://github.com/iamcco/coc-vimlsp">coc-vimlsp</a></h5><h5 id="coc-yaml"><a href="#coc-yaml" class="headerlink" title="coc-yaml"></a><a target="_blank" rel="noopener" href="https://github.com/neoclide/coc-yaml">coc-yaml</a></h5><h4 id="Other-coc-extensions"><a href="#Other-coc-extensions" class="headerlink" title="Other coc extensions"></a>Other coc extensions</h4><h5 id="coc-marketplace"><a href="#coc-marketplace" class="headerlink" title="coc-marketplace"></a><a target="_blank" rel="noopener" href="https://github.com/fannheyward/coc-marketplace">coc-marketplace</a></h5><p><a target="_blank" rel="noopener" href="https://github.com/neoclide/coc.nvim">coc.nvim</a>  extensions marketplace.</p>
+<ul>
+<li>search <code>keywords:coc.nvim</code> from npmjs.com, display extensions in <code>coc-lists</code></li>
+<li>extension name starts with <code>√</code> means installed already, with an <code>uninstall</code> action</li>
+<li>extension name starts with <code>x</code> means uninstalled, with an <code>install</code> action</li>
+<li>extension name ends with <code>*</code> is published by @chemzqm, IMO, is official</li>
+</ul>
+<h6 id="Usage-2"><a href="#Usage-2" class="headerlink" title="Usage"></a>Usage</h6><ul>
+<li><code>:CocList marketplace</code> list all available extensions</li>
+<li><code>:CocList marketplace python</code> to search extension that name contains <code>python</code></li>
+</ul>
+<p><img src="/en/2021/04/15/2021/coc-vimrc/5cf885c18736a85017.png" alt="coc-marketplace"> </p>
+<h5 id="coc-prettier"><a href="#coc-prettier" class="headerlink" title="coc-prettier"></a><a target="_blank" rel="noopener" href="https://github.com/neoclide/coc-prettier">coc-prettier</a></h5><p>you can use <code>:Prettier</code> to format current buffer.<br>your can <code>&lt;leader&gt;f</code> for range format.</p>
+<p>Prettier range format only support languageId including: <code>javascript</code>,<code>javascriptreact</code>, <code>typescript</code>, <code>typescriptreact</code>, <code>json</code> and <code>graphql</code>.</p>
+<h6 id="Update-your-coc-settings-json-for-format-on-save"><a href="#Update-your-coc-settings-json-for-format-on-save" class="headerlink" title="Update your coc-settings.json for format on save"></a>Update your <code>coc-settings.json</code> for format on save</h6><p>Open settings file with:</p>
+<pre><code>:CocConfig
+</code></pre>
+<p>Add:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;coc.preferences.formatOnSaveFiletypes&quot;: [&quot;css&quot;, &quot;markdown&quot;],</span><br></pre></td></tr></table></figure>
+
+<p>to setup the languages which you want to format on save.</p>
+<h5 id="coc-snippets"><a href="#coc-snippets" class="headerlink" title="coc-snippets"></a><a target="_blank" rel="noopener" href="https://github.com/neoclide/coc-snippets">coc-snippets</a></h5><table>
+<thead>
+<tr>
+<th align="center">Shortcut</th>
+<th align="center">Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>Insert Mode</code>  <code>Ctrl</code> <code>l</code></td>
+<td align="center">coc-snippets-expand<br>(trigger snippet expand)</td>
+</tr>
+<tr>
+<td align="center"><code>Visual Mode</code>  <code>Ctrl</code> <code>j</code></td>
+<td align="center">coc-snippets-select<br>(select text for visual placeholder of snippet)</td>
+</tr>
+<tr>
+<td align="center"><code>Ctrl</code> <code>j</code></td>
+<td align="center">coc_snippet_next<br>(jump to next placeholder, it’s default of coc.nvim)</td>
+</tr>
+<tr>
+<td align="center"><code>Ctrl</code> <code>k</code></td>
+<td align="center">coc_snippet_prev<br>(jump to previous placeholder, it’s default of coc.nvim)</td>
+</tr>
+<tr>
+<td align="center"><code>xmap</code> <code>&lt;leader&gt;</code> <code>x</code></td>
+<td align="center">coc-convert-snippet <br>(Use <leader>x for convert visual selected code to snippet)</td>
+</tr>
+<tr>
+<td align="center"><code>imap</code> <code>&lt;C-j&gt;</code> <code>&lt;Plug&gt;</code></td>
+<td align="center">coc-snippets-expand-jump <br>(Use <C-j> for both expand and jump (make expand higher priority.)</td>
+</tr>
+</tbody></table>
+<p>Make <code>&lt;tab&gt;</code> used for trigger completion, completion confirm, snippet expand and jump like VSCode.</p>
+<h6 id="vim-snippets"><a href="#vim-snippets" class="headerlink" title="vim-snippets"></a><a target="_blank" rel="noopener" href="https://github.com/honza/vim-snippets">vim-snippets</a></h6><p>vim-snipmate default snippets (Previously snipmate-snippets)</p>
+<p>This repository contains snippets files for various programming languages.</p>
+<ul>
+<li><code>snippets/*</code>: snippets using snipMate format</li>
+<li><code>UltiSnips/*</code>: snippets using UltiSnips format</li>
+</ul>
+<h5 id="coc-explorer"><a href="#coc-explorer" class="headerlink" title="coc-explorer"></a><a target="_blank" rel="noopener" href="https://github.com/weirongxu/coc-explorer">coc-explorer</a></h5><p>Explorer extension for <a target="_blank" rel="noopener" href="https://github.com/neoclide/coc.nvim">coc.nvim</a></p>
+<p><img src="/en/2021/04/15/2021/coc-vimrc/76720263-471be100-6777-11ea-82c1-614627097b02.png" alt="image"></p>
+<ul>
+<li>Open explorer <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;space&gt;e</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="coc-translator"><a href="#coc-translator" class="headerlink" title="coc-translator"></a><a target="_blank" rel="noopener" href="https://github.com/voldikss/coc-translator">coc-translator</a></h5><p>Translation extension for <a target="_blank" rel="noopener" href="https://github.com/neoclide/coc.nvim">coc.nvim</a>.</p>
+<p><img src="/en/2021/04/15/2021/coc-vimrc/103474126-b8e31b00-4ddb-11eb-916b-2e2d7b2b29e0.png"></p>
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&lt;Leader&gt;</code> <code>t</code></td>
+<td>popup</td>
+</tr>
+<tr>
+<td><code>&lt;Leader&gt;</code> <code>t</code></td>
+<td>echo</td>
+</tr>
+<tr>
+<td><code>&lt;Leader&gt;</code> <code>t</code></td>
+<td>replace</td>
+</tr>
+</tbody></table>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>Geek_Cat
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/" title="coc-vimrc">http://zhzhzhy.github.io/en/2021/04/15/2021/coc-vimrc/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/en/tags/vim/" rel="tag"># vim</a>
+              <a href="/en/tags/coc-nvim/" rel="tag"># coc-nvim</a>
+              <a href="/en/tags/neovim/" rel="tag"># neovim</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/en/2021/04/17/2021/Hexo-deploy-action/" rel="next" title="使用Github action自动部署Hexo博客到Github pages">
+                  使用Github action自动部署Hexo博客到Github pages <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Geek_Cat</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/en/js/comments.js"></script><script src="/en/js/utils.js"></script><script src="/en/js/motion.js"></script><script src="/en/js/next-boot.js"></script><script src="/en/js/bookmark.js"></script>
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.0/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/en/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/en/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"zhzhy-ml-en","count":true,"lazyload":false,"i18n":{"disqus":"disqus"}}</script>
+<script src="/en/js/third-party/comments/disqus.js"></script>
+
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js');
+  });
+}
+</script>
+
+</body>
+</html>

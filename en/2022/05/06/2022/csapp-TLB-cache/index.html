@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/en/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/en/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/en/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/en/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/en/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=EB+Garamond:300,300italic,400,400italic,700,700italic%7CNoto+Serif+SC:300,300italic,400,400italic,700,700italic%7CLong+Cang:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhzhzhy.github.io","root":"/en/","images":"/en/images","scheme":"Pisces","darkmode":true,"version":"8.12.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"default"},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/en/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/en/js/config.js"></script>
+
+    <meta name="description" content="虚拟内存(VM) 部分 TLB(Translation lookaside buffer) 常用名词   端到端的地址翻译(具体过程)  * [TLB](#tlb)   * [页表(Page Table)](#页表page-table)   * [高速缓存(Cache)](#高速缓存cache)   页面置换算法 最佳置换算法(OPT) 先进先出(FIFO)页面置换算法 Belady Ano">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSAPP笔记--虚拟内存VM的地址翻译过程及页面置换算法">
+<meta property="og:url" content="http://zhzhzhy.github.io/en/2022/05/06/2022/csapp-TLB-cache/index.html">
+<meta property="og:site_name" content="Geek_Cat&#39;s">
+<meta property="og:description" content="虚拟内存(VM) 部分 TLB(Translation lookaside buffer) 常用名词   端到端的地址翻译(具体过程)  * [TLB](#tlb)   * [页表(Page Table)](#页表page-table)   * [高速缓存(Cache)](#高速缓存cache)   页面置换算法 最佳置换算法(OPT) 先进先出(FIFO)页面置换算法 Belady Ano">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2022/05/06/2022/csapp-TLB-cache/4.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2022/05/06/2022/csapp-TLB-cache/5.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2022/05/06/2022/csapp-TLB-cache/1.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2022/05/06/2022/csapp-TLB-cache/7.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2022/05/06/2022/csapp-TLB-cache/8.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2022/05/06/2022/csapp-TLB-cache/9.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2022/05/06/2022/csapp-TLB-cache/10.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2022/05/06/2022/csapp-TLB-cache/11.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2022/05/06/2022/csapp-TLB-cache/12.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2022/05/06/2022/csapp-TLB-cache/OPT.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2022/05/06/2022/csapp-TLB-cache/FIFO.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2022/05/06/2022/csapp-TLB-cache/Belady.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2022/05/06/2022/csapp-TLB-cache/LRU.png">
+<meta property="article:published_time" content="2022-05-06T21:19:30.000Z">
+<meta property="article:modified_time" content="2022-07-17T15:35:09.982Z">
+<meta property="article:author" content="Geek_Cat">
+<meta property="article:tag" content="csapp">
+<meta property="article:tag" content="cache">
+<meta property="article:tag" content="TLB">
+<meta property="article:tag" content="virtual memory">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhzhzhy.github.io/en/2022/05/06/2022/csapp-TLB-cache/4.png">
+
+
+<link rel="canonical" href="http://zhzhzhy.github.io/en/2022/05/06/2022/csapp-TLB-cache/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://zhzhzhy.github.io/en/2022/05/06/2022/csapp-TLB-cache/","path":"2022/05/06/2022/csapp-TLB-cache/","title":"CSAPP笔记--虚拟内存VM的地址翻译过程及页面置换算法"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>CSAPP笔记--虚拟内存VM的地址翻译过程及页面置换算法 | Geek_Cat's</title>
+  
+
+
+
+
+<link rel="manifest" href="/manifest.json" />
+  <noscript>
+    <link rel="stylesheet" href="/en/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/en/atom.xml" title="Geek_Cat's" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/en/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Geek_Cat's</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Years may wrinkle the skin, but to give up enthusiasm wrinkles the soul</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/en/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/en/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/en/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/en/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/en/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-my-github-profile"><a href="https://github.com/zhzhzhy" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>My GitHub profile</a></li><li class="menu-item menu-item-简体中文-chinese"><a href="http://zhzhzhy.github.io/" rel="section"><i class="fa fa-language fa-fw"></i>简体中文 Chinese</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98-VM-%E9%83%A8%E5%88%86"><span class="nav-number">1.</span> <span class="nav-text">虚拟内存(VM) 部分</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#TLB-Translation-lookaside-buffer"><span class="nav-number">1.1.</span> <span class="nav-text">TLB(Translation lookaside buffer)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%90%8D%E8%AF%8D"><span class="nav-number">1.1.1.</span> <span class="nav-text">常用名词</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%9C%B0%E5%9D%80%E7%BF%BB%E8%AF%91-%E5%85%B7%E4%BD%93%E8%BF%87%E7%A8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">端到端的地址翻译(具体过程)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#TLB"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">TLB</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A1%B5%E8%A1%A8-Page-Table"><span class="nav-number">1.2.0.2.</span> <span class="nav-text">页表(Page Table)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%AB%98%E9%80%9F%E7%BC%93%E5%AD%98-Cache"><span class="nav-number">1.2.0.3.</span> <span class="nav-text">高速缓存(Cache)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95"><span class="nav-number">1.3.</span> <span class="nav-text">页面置换算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E4%BD%B3%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95-OPT"><span class="nav-number">1.3.1.</span> <span class="nav-text">最佳置换算法(OPT)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%88%E8%BF%9B%E5%85%88%E5%87%BA-FIFO-%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95"><span class="nav-number">1.3.2.</span> <span class="nav-text">先进先出(FIFO)页面置换算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Belady-Anomaly"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">Belady Anomaly</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E8%BF%91%E6%9C%80%E4%B9%85%E6%9C%AA%E4%BD%BF%E7%94%A8-LRU-Least-Recently-Used-%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95"><span class="nav-number">1.3.3.</span> <span class="nav-text">最近最久未使用(LRU &#x3D; Least Recently Used)置换算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E9%92%9F-CLOCK-%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95"><span class="nav-number">1.3.4.</span> <span class="nav-text">时钟(CLOCK)置换算法</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Geek_Cat</p>
+  <div class="site-description" itemprop="description">Geek & Coder & Vimer</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/en/archives/">
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/en/categories/">
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/en/tags/">
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhzhzhy" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zhzhzhy" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/en/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/zhzhzhy" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://zhzhzhy.github.io/en/2022/05/06/2022/csapp-TLB-cache/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/en/images/avatar.gif">
+      <meta itemprop="name" content="Geek_Cat">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Geek_Cat's">
+      <meta itemprop="description" content="Geek & Coder & Vimer">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="CSAPP笔记--虚拟内存VM的地址翻译过程及页面置换算法 | Geek_Cat's">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CSAPP笔记--虚拟内存VM的地址翻译过程及页面置换算法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-05-06 21:19:30" itemprop="dateCreated datePublished" datetime="2022-05-06T21:19:30+00:00">2022-05-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-07-17 15:35:09" itemprop="dateModified" datetime="2022-07-17T15:35:09+00:00">2022-07-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/en/categories/csapp/" itemprop="url" rel="index"><span itemprop="name">csapp</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/en/categories/csapp/cache/" itemprop="url" rel="index"><span itemprop="name">cache</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/en/categories/csapp/cache/TLB/" itemprop="url" rel="index"><span itemprop="name">TLB</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/en/categories/csapp/cache/TLB/virtual-memory/" itemprop="url" rel="index"><span itemprop="name">virtual memory</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/en/2022/05/06/2022/csapp-TLB-cache/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/05/06/2022/csapp-TLB-cache/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <!-- vim-markdown-toc GFM -->
+
+<ul>
+<li><a href="#%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98vm-%E9%83%A8%E5%88%86">虚拟内存(VM) 部分</a><ul>
+<li><a href="#tlbtranslation-lookaside-buffer">TLB(Translation lookaside buffer)</a><ul>
+<li><a href="#%E5%B8%B8%E7%94%A8%E5%90%8D%E8%AF%8D">常用名词</a></li>
+</ul>
+</li>
+<li><a href="#%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%9C%B0%E5%9D%80%E7%BF%BB%E8%AF%91%E5%85%B7%E4%BD%93%E8%BF%87%E7%A8%8B">端到端的地址翻译(具体过程)</a><pre><code>  * [TLB](#tlb)
+  * [页表(Page Table)](#页表page-table)
+  * [高速缓存(Cache)](#高速缓存cache)
+</code></pre>
+</li>
+<li><a href="#%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95">页面置换算法</a><ul>
+<li><a href="#%E6%9C%80%E4%BD%B3%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95opt">最佳置换算法(OPT)</a></li>
+<li><a href="#%E5%85%88%E8%BF%9B%E5%85%88%E5%87%BAfifo%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95">先进先出(FIFO)页面置换算法</a><ul>
+<li><a href="#belady-anomaly">Belady Anomaly</a></li>
+</ul>
+</li>
+<li><a href="#%E6%9C%80%E8%BF%91%E6%9C%80%E4%B9%85%E6%9C%AA%E4%BD%BF%E7%94%A8lru--least-recently-used%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95">最近最久未使用(LRU = Least Recently Used)置换算法</a></li>
+<li><a href="#%E6%97%B6%E9%92%9Fclock%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95">时钟(CLOCK)置换算法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<!-- vim-markdown-toc -->
+
+<h1 id="虚拟内存-VM-部分"><a href="#虚拟内存-VM-部分" class="headerlink" title="虚拟内存(VM) 部分"></a>虚拟内存(VM) 部分</h1><h2 id="TLB-Translation-lookaside-buffer"><a href="#TLB-Translation-lookaside-buffer" class="headerlink" title="TLB(Translation lookaside buffer)"></a>TLB(Translation lookaside buffer)</h2><blockquote>
+<p>A translation lookaside buffer (TLB) is a memory cache that stores the recent translations of virtual memory to physical memory.</p>
+</blockquote>
+<p>TLB 是翻译后备缓冲器(translation lookaside buffer)的缩写，是 MMU 中关于 PTE 的小的缓存，目的是加速虚拟地址到物理地址的翻译</p>
+<p>TLB 的一个例子</p>
+<p><img src="/en/2022/05/06/2022/csapp-TLB-cache/4.png" alt="4.png"></p>
+<center>虚拟地址中用以访问 TLB 的组成部分</center>
+
+<p>所有的地址翻译步骤都是在芯片上的 MMU(memory management unit) 中执行的</p>
+<p>地址翻译步骤：</p>
+<ol>
+<li>CPU 产生一个虚拟地址</li>
+<li>MMU 从 TLB 中取出相应的 PTE(Page table entry)</li>
+<li>MMU 将这个虚拟地址翻译成一个物理地址，并且将它发送到高速缓存/主存</li>
+<li>高速缓存/主存将所请求的数据字返回给 CPU</li>
+</ol>
+<p><img src="/en/2022/05/06/2022/csapp-TLB-cache/5.png"></p>
+<h3 id="常用名词"><a href="#常用名词" class="headerlink" title="常用名词"></a>常用名词</h3><table>
+<thead>
+<tr>
+<th>缩写</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$N = 2^n$</td>
+<td>虚拟地址空间中的地址数量</td>
+</tr>
+<tr>
+<td>$M = 2^m$</td>
+<td>物理地址空间中的地址数量</td>
+</tr>
+<tr>
+<td>$P = 2^p$</td>
+<td>页的大小（字节）</td>
+</tr>
+</tbody></table>
+<p>虚拟地址（VA）</p>
+<table>
+<thead>
+<tr>
+<th>缩写</th>
+<th>英文全称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>VPO</td>
+<td>Virtual Page Offset</td>
+<td>虚拟页面偏移量（字节）</td>
+</tr>
+<tr>
+<td>VPN</td>
+<td>Virtual Page Number</td>
+<td>虚拟页号</td>
+</tr>
+<tr>
+<td>TLBI</td>
+<td>TLB Index</td>
+<td>TLB 索引</td>
+</tr>
+<tr>
+<td>TLBT</td>
+<td>TLB Tag</td>
+<td>TLB 标记</td>
+</tr>
+</tbody></table>
+<p>物理地址（PA）</p>
+<table>
+<thead>
+<tr>
+<th>缩写</th>
+<th>英文全称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PPO</td>
+<td>Physical Page Offset</td>
+<td>物理页面偏移量（字节）</td>
+</tr>
+<tr>
+<td>PPN</td>
+<td>Physical Page Number</td>
+<td>物理页号</td>
+</tr>
+<tr>
+<td>CO</td>
+<td>Cache Offset</td>
+<td>缓冲块内的字节偏移量</td>
+</tr>
+<tr>
+<td>CI</td>
+<td>Cache Index</td>
+<td>高速缓存索引</td>
+</tr>
+<tr>
+<td>CT</td>
+<td>Cache Tag</td>
+<td>高速缓存标记</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>Conceptually, a virtual memory is organized as an array of N contiguous byte-sized cells stored on disk.<br>Each byte has a unique virtual address that serves as an index into the array. The contents of the array on<br>disk are cached in main memory.</p>
+</blockquote>
+<p>从某种意义上来讲，虚拟内存也是一种缓存，是内容在主存的缓存。</p>
+<p><img src="/en/2022/05/06/2022/csapp-TLB-cache/1.png" alt="1.png"></p>
+<center>使用页表的地址翻译</center>
+
+<h2 id="端到端的地址翻译-具体过程"><a href="#端到端的地址翻译-具体过程" class="headerlink" title="端到端的地址翻译(具体过程)"></a>端到端的地址翻译(具体过程)</h2><p>假设我们的系统是这样的：</p>
+<ol>
+<li>内存是按字节寻址的。</li>
+<li>内存访问是针对 1 字节的字的（不是 4 字节的字）。</li>
+<li>虚拟地址是 14 位长的（$n = 14$）。</li>
+<li>物理地址是 12 位长的（$m = 12$）。</li>
+<li>页面大小是 64 字节（$P = 64$）。</li>
+<li>TLB 是四路组相联的，总共有 16 个条目。</li>
+<li>L1 d-cache 是物理寻址、直接映射的，行大小为 4 字节，而总共有 16 个组。</li>
+</ol>
+<p><img src="/en/2022/05/06/2022/csapp-TLB-cache/7.png"></p>
+<p>14 位虚拟地址(VA),12 位物理地址(PA)</p>
+<p>每个页面是$2^6=64$Byte,所以虚拟地址和物理地址的低 6 位分别作为 VPO 和 PPO（这样偏移的话刚好能覆盖到地址）</p>
+<p><img src="/en/2022/05/06/2022/csapp-TLB-cache/8.png"></p>
+<h4 id="TLB"><a href="#TLB" class="headerlink" title="TLB"></a>TLB</h4><p>TLB 是利用 VPN 的位进行虚拟寻址的<br>TLB 是四路组相联的,TLBI 属于 VPN 的低两位($2^2=4$路),TLBT 属于 VPN 的高 6 位</p>
+<h4 id="页表-Page-Table"><a href="#页表-Page-Table" class="headerlink" title="页表(Page Table)"></a>页表(Page Table)</h4><p>页表: 页表一共有$2^8 = 256$个 PTE(Page table entry),用索引它的 VPN 来标识每个 PTE</p>
+<h4 id="高速缓存-Cache"><a href="#高速缓存-Cache" class="headerlink" title="高速缓存(Cache)"></a>高速缓存(Cache)</h4><p>每个块都是 4 Byte,低 2 位块偏移(Cache Offset)，高 6 位标记(Cache Tag)<br><img src="/en/2022/05/06/2022/csapp-TLB-cache/9.png"><br><img src="/en/2022/05/06/2022/csapp-TLB-cache/10.png"><br><img src="/en/2022/05/06/2022/csapp-TLB-cache/11.png"></p>
+<p>当 CPU 执行一条读地址 0x03d4 处字节的加载指令,我们来手工模拟一下接下来发生的过程。</p>
+<ol>
+<li><p>MMU 从 0x03d4 取出 VPN(0x0F)，TLB 从 VPN 取出 TLBI(0x03)和 TLBT(0x3),TLBT 与 index 为 2 的块匹配,取出 PPN(0x0D)返回 MMU (TLB 命中)</p>
+</li>
+<li><p>MMU 将来自 PTE 的 PPN(0x0D)和来自虚拟地址的 VPO(0x14)连接起来,形成物理地址 0x354</p>
+</li>
+</ol>
+<p><img src="/en/2022/05/06/2022/csapp-TLB-cache/12.png"></p>
+<p>MMU 发送物理地址 0x354 给缓存，缓存从物理地址中抽取出缓存偏移 CO（0x0）、缓存组索引 CI（0x5）以及缓存标记 CT（0x0D）。</p>
+<p>CI(0x5) 中的标记与 CT(0x0D) 相匹配,缓存命中,读出偏移量 CO 的字节 0x36，并返回给 MMU,MMU 把值传回 CPU</p>
+<p>如果 TLB 不命中,PTE 无效，将会发生缺页中断(Page Fault),内核从磁盘调入合适的页面;另一种可能性是 PTE 是有效的，但是所需要的内存块在缓存中不命中</p>
+<blockquote>
+<p>缺页中断（英语：Page fault，又名硬错误、硬中断、分页错误、寻页缺失、缺页中断、页故障等）指的是当软件试图访问已映射在虚拟地址空间中，但是目前并未被加载在物理内存中的一个分页时，由中央处理器的内存管理单元所发出的中断。</p>
+</blockquote>
+<h2 id="页面置换算法"><a href="#页面置换算法" class="headerlink" title="页面置换算法"></a>页面置换算法</h2><h3 id="最佳置换算法-OPT"><a href="#最佳置换算法-OPT" class="headerlink" title="最佳置换算法(OPT)"></a>最佳置换算法(OPT)</h3><p>最佳(Optimal, OPT)置换算法所选择的被淘汰页面将是以后永不使用的，或者是在最长时间内不再被访问的页面,这样可以保证获得最低的缺页率。</p>
+<p>但由于人们目前无法预知进程在内存下的若千页面中哪个是未来最长时间内不再被访问的，因而该算法无法实现。</p>
+<p>(一个理论上的理想的算法)</p>
+<p><img src="/en/2022/05/06/2022/csapp-TLB-cache/OPT.png" alt="OPT.png"></p>
+<h3 id="先进先出-FIFO-页面置换算法"><a href="#先进先出-FIFO-页面置换算法" class="headerlink" title="先进先出(FIFO)页面置换算法"></a>先进先出(FIFO)页面置换算法</h3><p>队列的思想,把调入内存的页面根据先后次序链接成队列,设置一个指针总指向最早的页面</p>
+<p><img src="/en/2022/05/06/2022/csapp-TLB-cache/FIFO.png" alt="FIFO.png"></p>
+<h4 id="Belady-Anomaly"><a href="#Belady-Anomaly" class="headerlink" title="Belady Anomaly"></a>Belady Anomaly</h4><p>FIFO 算法还会产生当所分配的物理块数增大而页故障数不减反增的异常现象，这是由 Belady 于 1969 年发现，故称为 Belady 异常</p>
+<p>只有 FIFO 算法可能出现 Belady 异常，而 LRU 和 OPT 算法永远不会出现 Belady 异常</p>
+<p><a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/beladys-anomaly-in-page-replacement-algorithms/">Belady’s Anomaly in Page Replacement Algorithms</a></p>
+<p><img src="/en/2022/05/06/2022/csapp-TLB-cache/Belady.png" alt="Belady.png"></p>
+<p>这样的反复换入换出会导致页面调用的抖动(Thrashing)</p>
+<h3 id="最近最久未使用-LRU-Least-Recently-Used-置换算法"><a href="#最近最久未使用-LRU-Least-Recently-Used-置换算法" class="headerlink" title="最近最久未使用(LRU = Least Recently Used)置换算法"></a>最近最久未使用(LRU = Least Recently Used)置换算法</h3><p>选择最近最长时间未访问过的页面予以淘汰，它认为过去一段时间内未访问过的页面，在最近的将来可能也不会被访问。</p>
+<p><img src="/en/2022/05/06/2022/csapp-TLB-cache/LRU.png" alt="LRU.png"></p>
+<h3 id="时钟-CLOCK-置换算法"><a href="#时钟-CLOCK-置换算法" class="headerlink" title="时钟(CLOCK)置换算法"></a>时钟(CLOCK)置换算法</h3><p>简单的 CLOCK 算法是给每一帧关联一个附加位，称为使用位。</p>
+<p>当某一页首次装入主存时，该帧的使用位设置为 1;当该页随后再被访问到时，它的使用位也被置为 1。</p>
+<p>对于页替换算法，用于替换的候选帧集合看做一个循环缓冲区，并且有一个指针与之相关联。</p>
+<p>当某一页被替换时，该指针被设置成指向缓冲区中的下一帧。当需要替换一页时，操作系统扫描缓冲区，以查找使用位被置为 0 的一帧。</p>
+<p>每当遇到一个使用位为 1 的帧时，操作系统就将该位重新置为 0；如果在这个过程开始时，缓冲区中所有帧的使用位均为 0，则选择遇到的第一个帧替换；如果所有帧的使用位均为 1,则指针在缓冲区中完整地循环一周，把所有使用位都置为 0，并且停留在最初的位置上，替换该帧中的页。</p>
+<p>由于该算法循环地检查各页面的情况，故称为 CLOCK 算法，又称为最近未用(Not Recently Used, NRU)算法。</p>
+<hr>
+<p>下一篇: 高速缓存(Cache)的工作原理</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>Geek_Cat
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="http://zhzhzhy.github.io/en/2022/05/06/2022/csapp-TLB-cache/" title="CSAPP笔记--虚拟内存VM的地址翻译过程及页面置换算法">http://zhzhzhy.github.io/en/2022/05/06/2022/csapp-TLB-cache/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/en/tags/csapp/" rel="tag"># csapp</a>
+              <a href="/en/tags/cache/" rel="tag"># cache</a>
+              <a href="/en/tags/TLB/" rel="tag"># TLB</a>
+              <a href="/en/tags/virtual-memory/" rel="tag"># virtual memory</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/en/2022/03/26/2022/the-republic/" rel="prev" title="《理想国》柏拉图的哲学的三个比喻">
+                  <i class="fa fa-chevron-left"></i> 《理想国》柏拉图的哲学的三个比喻
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/en/2022/07/17/2022/csapp-cache/" rel="next" title="cache的工作原理笔记">
+                  cache的工作原理笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Geek_Cat</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/en/js/comments.js"></script><script src="/en/js/utils.js"></script><script src="/en/js/motion.js"></script><script src="/en/js/next-boot.js"></script><script src="/en/js/bookmark.js"></script>
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.0/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/en/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/en/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"zhzhy-ml-en","count":true,"lazyload":false,"i18n":{"disqus":"disqus"}}</script>
+<script src="/en/js/third-party/comments/disqus.js"></script>
+
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js');
+  });
+}
+</script>
+
+</body>
+</html>

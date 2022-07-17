@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/en/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/en/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/en/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/en/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/en/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=EB+Garamond:300,300italic,400,400italic,700,700italic%7CNoto+Serif+SC:300,300italic,400,400italic,700,700italic%7CLong+Cang:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhzhzhy.github.io","root":"/en/","images":"/en/images","scheme":"Pisces","darkmode":true,"version":"8.12.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"default"},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/en/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/en/js/config.js"></script>
+
+    <meta name="description" content="volatile类型Volatile关键字主要有三个功能：  防止重排序  保证可见性  保证单次读或写操作的原子性。   volatile修饰的变量发生修改时，volatile会强制刷新主内存. 在CSAPP的12.16节，有一个badcnt.c示例程序 12345678910111213141516171819202122232425262728293031323334353637383940">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSAPP中并发编程的一些概念总结">
+<meta property="og:url" content="http://zhzhzhy.github.io/en/2021/04/18/2021/concurrent_programming/index.html">
+<meta property="og:site_name" content="Geek_Cat&#39;s">
+<meta property="og:description" content="volatile类型Volatile关键字主要有三个功能：  防止重排序  保证可见性  保证单次读或写操作的原子性。   volatile修饰的变量发生修改时，volatile会强制刷新主内存. 在CSAPP的12.16节，有一个badcnt.c示例程序 12345678910111213141516171819202122232425262728293031323334353637383940">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-04-18T22:42:00.000Z">
+<meta property="article:modified_time" content="2022-07-17T15:35:09.978Z">
+<meta property="article:author" content="Geek_Cat">
+<meta property="article:tag" content="CSAPP">
+<meta property="article:tag" content="concurrent">
+<meta property="article:tag" content="操作系统">
+<meta property="article:tag" content="多线程">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://zhzhzhy.github.io/en/2021/04/18/2021/concurrent_programming/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://zhzhzhy.github.io/en/2021/04/18/2021/concurrent_programming/","path":"2021/04/18/2021/concurrent_programming/","title":"CSAPP中并发编程的一些概念总结"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>CSAPP中并发编程的一些概念总结 | Geek_Cat's</title>
+  
+
+
+
+
+<link rel="manifest" href="/manifest.json" />
+  <noscript>
+    <link rel="stylesheet" href="/en/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/en/atom.xml" title="Geek_Cat's" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/en/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Geek_Cat's</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Years may wrinkle the skin, but to give up enthusiasm wrinkles the soul</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/en/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/en/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/en/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/en/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/en/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-my-github-profile"><a href="https://github.com/zhzhzhy" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>My GitHub profile</a></li><li class="menu-item menu-item-简体中文-chinese"><a href="http://zhzhzhy.github.io/" rel="section"><i class="fa fa-language fa-fw"></i>简体中文 Chinese</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#volatile%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">volatile类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E5%92%8C%E5%B9%B6%E8%A1%8C%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">2.</span> <span class="nav-text">并发和并行的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#semaphore-%E4%BF%A1%E5%8F%B7%E9%87%8F"><span class="nav-number">3.</span> <span class="nav-text">semaphore(信号量)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%B4%E7%95%8C%E5%8C%BA-Critical-section"><span class="nav-number">4.</span> <span class="nav-text">临界区(Critical section)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mutex-%E4%BA%92%E6%96%A5%E9%94%81"><span class="nav-number">5.</span> <span class="nav-text">mutex(互斥锁)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A7%E7%94%9F%E6%AD%BB%E9%94%81%E7%9A%84%E5%9B%9B%E4%B8%AA%E5%BF%85%E8%A6%81%E6%9D%A1%E4%BB%B6"><span class="nav-number">6.</span> <span class="nav-text">产生死锁的四个必要条件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E9%87%8D%E5%85%A5%E6%80%A7"><span class="nav-number">7.</span> <span class="nav-text">可重入性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="nav-number">8.</span> <span class="nav-text">线程安全</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%BB%E7%94%BB%E5%B9%B6%E8%A1%8C%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%80%A7%E8%83%BD"><span class="nav-number">9.</span> <span class="nav-text">刻画并行程序的性能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B6%88%E8%B4%B9%E8%80%85%E7%94%9F%E4%BA%A7%E8%80%85%E9%97%AE%E9%A2%98-Producer-consumer-problem"><span class="nav-number">10.</span> <span class="nav-text">消费者生产者问题(Producer-consumer problem)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%BB%E8%80%85%E5%86%99%E8%80%85%E9%97%AE%E9%A2%98-Reader-Writer-Problem"><span class="nav-number">11.</span> <span class="nav-text">读者写者问题(Reader-Writer Problem)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E4%B8%AA%E8%AF%BB%E8%80%85-%E5%86%99%E8%80%85%E8%A7%A3%E6%B3%95-%E8%AF%BB%E8%80%85%E4%BC%98%E5%85%88"><span class="nav-number">11.1.</span> <span class="nav-text">第一个读者-写者解法(读者优先)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E4%B8%AA%E8%AF%BB%E8%80%85-%E5%86%99%E8%80%85%E8%A7%A3%E6%B3%95-%E5%86%99%E8%80%85%E4%BC%98%E5%85%88"><span class="nav-number">11.2.</span> <span class="nav-text">第二个读者-写者解法(写者优先)</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Geek_Cat</p>
+  <div class="site-description" itemprop="description">Geek & Coder & Vimer</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/en/archives/">
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/en/categories/">
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/en/tags/">
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhzhzhy" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zhzhzhy" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/en/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/zhzhzhy" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://zhzhzhy.github.io/en/2021/04/18/2021/concurrent_programming/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/en/images/avatar.gif">
+      <meta itemprop="name" content="Geek_Cat">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Geek_Cat's">
+      <meta itemprop="description" content="Geek & Coder & Vimer">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="CSAPP中并发编程的一些概念总结 | Geek_Cat's">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CSAPP中并发编程的一些概念总结
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-04-18 22:42:00" itemprop="dateCreated datePublished" datetime="2021-04-18T22:42:00+00:00">2021-04-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-07-17 15:35:09" itemprop="dateModified" datetime="2022-07-17T15:35:09+00:00">2022-07-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/en/categories/CSAPP/" itemprop="url" rel="index"><span itemprop="name">CSAPP</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/en/categories/CSAPP/concurrent/" itemprop="url" rel="index"><span itemprop="name">concurrent</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/en/categories/CSAPP/concurrent/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/en/categories/CSAPP/concurrent/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">多线程</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/en/2021/04/18/2021/concurrent_programming/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/04/18/2021/concurrent_programming/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="volatile类型"><a href="#volatile类型" class="headerlink" title="volatile类型"></a>volatile类型</h2><p>Volatile关键字主要有三个功能：</p>
+<ol>
+<li><p>防止重排序</p>
+</li>
+<li><p>保证可见性</p>
+</li>
+<li><p>保证单次读或写操作的原子性。</p>
+</li>
+</ol>
+<p>volatile修饰的变量发生修改时，volatile会强制刷新主内存.</p>
+<p>在CSAPP的12.16节，有一个badcnt.c示例程序</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * badcnt.c - An improperly synchronized counter program</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">/* $begin badcnt */</span></span><br><span class="line"><span class="comment">/* WARNING: This code is buggy! */</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;csapp.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> *<span class="title function_">thread</span><span class="params">(<span class="type">void</span> *vargp)</span>;  <span class="comment">/* Thread routine prototype */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Global shared variable */</span></span><br><span class="line"><span class="keyword">volatile</span> <span class="type">long</span> cnt = <span class="number">0</span>; <span class="comment">/* Counter */</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">long</span> niters;</span><br><span class="line">	<span class="type">pthread_t</span> tid1, tid2;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Check input argument */</span></span><br><span class="line">	<span class="keyword">if</span> (argc != <span class="number">2</span>) &#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;usage: %s &lt;niters&gt;\n&quot;</span>, argv[<span class="number">0</span>]);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	niters = atoi(argv[<span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Create threads and wait for them to finish */</span></span><br><span class="line">	Pthread_create(&amp;tid1, <span class="literal">NULL</span>, thread, &amp;niters);</span><br><span class="line">	Pthread_create(&amp;tid2, <span class="literal">NULL</span>, thread, &amp;niters);</span><br><span class="line">	Pthread_join(tid1, <span class="literal">NULL</span>);</span><br><span class="line">	Pthread_join(tid2, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Check result */</span></span><br><span class="line">	<span class="keyword">if</span> (cnt != (<span class="number">2</span> * niters))</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;BOOM! cnt=%ld\n&quot;</span>, cnt);</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;OK cnt=%ld\n&quot;</span>, cnt);</span><br><span class="line">	<span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Thread routine */</span></span><br><span class="line"><span class="type">void</span> *<span class="title function_">thread</span><span class="params">(<span class="type">void</span> *vargp)</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="type">long</span> i, niters = *((<span class="type">long</span> *)vargp);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; niters; i++) <span class="comment">//line:conc:badcnt:beginloop</span></span><br><span class="line">	cnt++;                   <span class="comment">//line:conc:badcnt:endloop</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* $end badcnt */</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<blockquote>
+<ul>
+<li>$H_i$: The block of instructions at the head of the loop</li>
+<li>$L_i$: The instruction that loads the shared variable cnt into register %$rdx_i$, where %$rdx_i$ denotes the value of register %$rdx$ in thread i</li>
+<li>$U_i$: The instruction that updates (increments) %$rdx_i$</li>
+<li>$S_i$: The instruction that stores the updated value of %$rdx_i$ back to the shared variable cnt</li>
+<li>$T_i$: The block of instructions at the tail of the loop</li>
+</ul>
+</blockquote>
+<p>其中关于%$rdx_i$汇编语言中就能看出volatile类型的特性：从Memory读取变量到寄存器，在寄存器中改变值后，立马写回内存</p>
+<p>volatile关键字首先具有“易变性”，声明为volatile变量编译器会强制要求读内存，相关语句不会直接使用上一条语句对应的的寄存器内容，而是重新从内存中读取。</p>
+<h2 id="并发和并行的区别"><a href="#并发和并行的区别" class="headerlink" title="并发和并行的区别"></a>并发和并行的区别</h2><ul>
+<li><p>Concurrent(Concurrency)  – 并发：一段时间内有多个进程执行，不强调同时执行</p>
+</li>
+<li><p>Parallel(Parallelism)   –  并行：一段时间内有多个进程同时执行，强调同时</p>
+</li>
+</ul>
+<h2 id="semaphore-信号量"><a href="#semaphore-信号量" class="headerlink" title="semaphore(信号量)"></a>semaphore(信号量)</h2><blockquote>
+<p><strong>Semaphores</strong> provide a convenient way to ensure <strong>mutually exclusive</strong> access to shared variables.<br>Binary semaphores whose purpose is to provide mutual exclusion are often called mutexes.</p>
+</blockquote>
+<blockquote>
+<p>A semaphore, s, is a global variable with a nonnegative integer value that can only be manipulated by two special operations, called P and V :</p>
+<ul>
+<li>P(s):If s is nonzero, then P decrements s and returns immediately. If s is zero, then suspend the thread until s becomes nonzero and the process is restarted by a V operation. After restarting, the P operation decrements s and returns control to the caller.</li>
+<li>V(s): The V operation increments s by 1. If there are any threads blocked at a P operation waiting for s to become nonzero, then the V operation restarts exactly one of these threads, which then completes its P operation by decrementing s.</li>
+</ul>
+</blockquote>
+<p>信号量（semaphore）的数据结构为一个值和一个指针，指针指向等待该信号量的下一个进程，是一种特殊的全局变量，确保了进程能够<strong>互斥访问</strong>有限的临界资源，下文称作<code>s</code>，<code>s</code>为非负整数，即$s\ge0$</p>
+<p>信号量的值表示相应资源的使用情况:<br>信号量$s\ge0$时，S表示可用资源的数量;$s\le0$时，表示没有资源可用，绝对值代表当前等待资源的进程数.</p>
+<pre><code>       `P(s)`和`V(s)`是由*Edsger Dijkstra*提出的共享变量的互斥访问机制，旨在解决多线程并发中互斥资源的同步问题
+
+       在荷兰语中: P代表proberen(to test)，V代表verhogen(to increment)
+</code></pre>
+<ul>
+<li><p><code>P(s)</code>: 如果<code>s</code>不为0，执行后请求分配一个资源，S的值减1(<code>s--</code>)；当$s&lt;0$时，表示已经没有可用资源，S的绝对值表示当前等待该资源的进程数。请求者必须等待其他进程释放该类资源，才能继续运行。</p>
+</li>
+<li><p><code>V(s)</code>: 执行后释放一个资源，S的值加1(<code>s++</code>)；若$S&lt;0$，表示有某些进程正在等待该资源，因此要唤醒一个等待状态的进程，使之执行P操作，继续运行下去。</p>
+</li>
+</ul>
+<blockquote>
+<p>The definitions of P and V ensure that a running program can never enter a state where a properly initialized semaphore has a negative value.</p>
+</blockquote>
+<h2 id="临界区-Critical-section"><a href="#临界区-Critical-section" class="headerlink" title="临界区(Critical section)"></a>临界区(Critical section)</h2><p>临界区：阻止多个进程同时进入访问这些共享资源的代码段；</p>
+<p>临界资源：一次只允许一个进程访问的资源；<br>P V操作的一般模式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">P(s)</span><br><span class="line">临界区(Critical section)</span><br><span class="line">V(s)</span><br></pre></td></tr></table></figure>
+
+<p>P和V是原语操作，其执行不可分割，不可中断，P和V确保了进程不会互相进入临界区，确保了线程安全</p>
+<h2 id="mutex-互斥锁"><a href="#mutex-互斥锁" class="headerlink" title="mutex(互斥锁)"></a>mutex(互斥锁)</h2><blockquote>
+<p>Strictly speaking, a mutex is a locking mechanism used to synchronize access to a resource. Only one task (can be a thread or process based on OS abstraction) can acquire the mutex. It means there is ownership associated with a mutex, and only the owner can release the lock (mutex).</p>
+</blockquote>
+<p>类似于semaphores，保护共享资源。</p>
+<p>mutex（互斥量）也是一种二元的锁机制，只有是（1）和否（0）的两个值，和二元信号量比较相似</p>
+<p>典型的例子就是买票：<br>票是共享资源，现在有两个线程同时过来买票。如果你不用mutex在线程里把票锁住，那么就可能出现“把同一张票卖给两个不同的人（线程）”的情况。</p>
+<h2 id="产生死锁的四个必要条件"><a href="#产生死锁的四个必要条件" class="headerlink" title="产生死锁的四个必要条件"></a>产生死锁的四个必要条件</h2><ol>
+<li>互斥条件：一个资源每次只能被一个进程使用。</li>
+<li>占有且等待：一个进程因请求资源而阻塞时，对已获得的资源保持不放。</li>
+<li>不可强行占有:进程已获得的资源，在末使用完之前，不能强行剥夺。</li>
+<li>循环等待条件:若干进程之间形成一种头尾相接的循环等待资源关系。</li>
+</ol>
+<h2 id="可重入性"><a href="#可重入性" class="headerlink" title="可重入性"></a>可重入性</h2><blockquote>
+<p>有一类重要的线程安全函数，叫做可重入函数（reentrant function），其特点在于它们具有这样一种属性：当它们被多个线程调用时，不会引用任何共享数据。</p>
+</blockquote>
+<blockquote>
+<p>如果所有的函数参数都是值传递，并且所有的数据引用都是本地的自动栈变量，那么函数就是显示可重入的。</p>
+</blockquote>
+<h2 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h2><blockquote>
+<p>We can identify four (nondisjoint) classes of thread-unsafe functions:<br>Class 1: Functions that do not protect shared variables.<br>…<br>Class 2: Functions that keep state across multiple invocations.<br>…<br>Class 3: Functions that return a pointer to a static variable.<br>…<br>Class 4: Functions that call thread-unsafe functions.</p>
+</blockquote>
+<p>一个函数被称为线程安全的（thread-safe），当且仅当被多个线程反复地调用时，他会一直产生正确的结果。</p>
+<blockquote>
+<ul>
+<li>线程不安全函数类：</li>
+</ul>
+</blockquote>
+<blockquote>
+<ol>
+<li>不保护共享变量的函数</li>
+<li>保持跨越多个调用的状态的函数</li>
+<li>返回指向静态变量的指针的函数。结果可能会被另外一个线程覆盖</li>
+<li>调用线程不安全的函数</li>
+</ol>
+</blockquote>
+<h2 id="刻画并行程序的性能"><a href="#刻画并行程序的性能" class="headerlink" title="刻画并行程序的性能"></a>刻画并行程序的性能</h2><p>理想情况下，我们期望运行时间随着核心数的增加线性下降。但实际上不会这样（书上的例子）是大于四个（四核）。他说线程多了，会有上下文切换的开销。并行程序常常被写为每个核上只运行一个线程。</p>
+<p>绝对时间是衡量程序性能的终极标准，但是也有一些有用的相对衡量标准<br>并行程序的加速比（speedup）通常定义为 $S_p = \frac{T_1}{T_p}$ ,p 为处理器核心数，Tk 是在 k 个核上的运行时间。这个公式有时被称为强扩展（strong scaling）。当 T1 是程序顺序执行版本的执行时间时，$S_p$ 称为绝对加速比（absolute speedup），当 $T_1$ 是程序并行版本在一个核上的执行时间时，Sp 称为相对加速比（relative speedup）。绝对加速比能更真实的衡量并行的好处。</p>
+<p>一种相关的测量量称为效率（efficiency），定义为： $E_p = \frac{S_p}{p} = \frac{T_1}{pT_p}$</p>
+<p>加速比还有另外一面，成为弱扩展（weak scaling），在增加处理器数量的同时，增加问题的规模，这样随着处理器数量的增加，每个处理器执行的工作量不变。在这种描述下，加速比和效率被表达为单位时间完成的总工作量。</p>
+<h2 id="消费者生产者问题-Producer-consumer-problem"><a href="#消费者生产者问题-Producer-consumer-problem" class="headerlink" title="消费者生产者问题(Producer-consumer problem)"></a>消费者生产者问题(Producer-consumer problem)</h2><p>生产者消费者问题（英语：Producer-consumer problem），描述了共享固定大小缓冲区(buffer)的两个进程——即所谓的“生产者”和“消费者”，类似于视频播放的缓冲。</p>
+<p>生产者消费者问题在多线程中常见的问题是<strong>竞争(Race)</strong></p>
+<p>不同进程抢着进入临界区，可能会引发<strong>死锁(Deadlock)</strong>,即多个进程握着资源但都在等待对方释放临界资源，但等待永远不可能到来。</p>
+<h2 id="读者写者问题-Reader-Writer-Problem"><a href="#读者写者问题-Reader-Writer-Problem" class="headerlink" title="读者写者问题(Reader-Writer Problem)"></a>读者写者问题(Reader-Writer Problem)</h2><p>读者-写者问题是互斥问题的一个概括。一组并发的线程要访问一个共享对象，有些线程只读对象，其他线程只修改对象。修改的线程叫写者，只读对象的线程叫做读者。写者必须拥有对对象独占的访问，读者可以和其他读者共享对象。</p>
+<p>这个问题有几个变种，分别基于读者和写者的优先级。第一类：读者优先。第二类：写者优先。对这两种读者-写者问题的正确解答可能导致饥饿（starvation）。饥饿就是一个线程无限期地阻塞，无法进展。比如当读者优先级高时，如果读者源源不断，那么写者就可能一直等待。</p>
+<blockquote>
+<p>互斥锁加锁顺序规则：给定所有互斥操作的一个全序，如果每个线程都是以一种顺序获得互斥锁并以相反的顺序释放，那么这个程序就是无死锁的。</p>
+</blockquote>
+<p>CSAPP书上12.25是并发缓冲区同步的例子</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">	<span class="comment">/* $begin sbufc */</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;csapp.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;sbuf.h&quot;</span></span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Create an empty, bounded, shared FIFO buffer with n slots */</span></span><br><span class="line">	<span class="comment">/* $begin sbuf_init */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">sbuf_init</span><span class="params">(<span class="type">sbuf_t</span> *sp, <span class="type">int</span> n)</span></span><br><span class="line">&#123;</span><br><span class="line">	sp-&gt;buf = Calloc(n, <span class="keyword">sizeof</span>(<span class="type">int</span>));</span><br><span class="line">	sp-&gt;n = n;                       <span class="comment">/* Buffer holds max of n items */</span></span><br><span class="line">	sp-&gt;front = sp-&gt;rear = <span class="number">0</span>;        <span class="comment">/* Empty buffer iff front == rear */</span></span><br><span class="line">	Sem_init(&amp;sp-&gt;mutex, <span class="number">0</span>, <span class="number">1</span>);      <span class="comment">/* Binary semaphore for locking */</span></span><br><span class="line">	Sem_init(&amp;sp-&gt;slots, <span class="number">0</span>, n);      <span class="comment">/* Initially, buf has n empty slots */</span></span><br><span class="line">	Sem_init(&amp;sp-&gt;items, <span class="number">0</span>, <span class="number">0</span>);      <span class="comment">/* Initially, buf has zero data items */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* $end sbuf_init */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Clean up buffer sp */</span></span><br><span class="line"><span class="comment">/* $begin sbuf_deinit */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">sbuf_deinit</span><span class="params">(<span class="type">sbuf_t</span> *sp)</span></span><br><span class="line">&#123;</span><br><span class="line">	Free(sp-&gt;buf);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* $end sbuf_deinit */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Insert item onto the rear of shared buffer sp */</span></span><br><span class="line"><span class="comment">/* $begin sbuf_insert */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">sbuf_insert</span><span class="params">(<span class="type">sbuf_t</span> *sp, <span class="type">int</span> item)</span></span><br><span class="line">&#123;</span><br><span class="line">	P(&amp;sp-&gt;slots);                          <span class="comment">/* Wait for available slot */</span></span><br><span class="line">	P(&amp;sp-&gt;mutex);                          <span class="comment">/* Lock the buffer */</span></span><br><span class="line">	sp-&gt;buf[(++sp-&gt;rear)%(sp-&gt;n)] = item;   <span class="comment">/* Insert the item */</span></span><br><span class="line">	V(&amp;sp-&gt;mutex);                          <span class="comment">/* Unlock the buffer */</span></span><br><span class="line">	V(&amp;sp-&gt;items);                          <span class="comment">/* Announce available item */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* $end sbuf_insert */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Remove and return the first item from buffer sp */</span></span><br><span class="line"><span class="comment">/* $begin sbuf_remove */</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">sbuf_remove</span><span class="params">(<span class="type">sbuf_t</span> *sp)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> item;</span><br><span class="line">	P(&amp;sp-&gt;items);                          <span class="comment">/* Wait for available item */</span></span><br><span class="line">	P(&amp;sp-&gt;mutex);                          <span class="comment">/* Lock the buffer */</span></span><br><span class="line">	item = sp-&gt;buf[(++sp-&gt;front)%(sp-&gt;n)];  <span class="comment">/* Remove the item */</span></span><br><span class="line">	V(&amp;sp-&gt;mutex);                          <span class="comment">/* Unlock the buffer */</span></span><br><span class="line">	V(&amp;sp-&gt;slots);                          <span class="comment">/* Announce available slot */</span></span><br><span class="line">	<span class="keyword">return</span> item;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* $end sbuf_remove */</span></span><br><span class="line"><span class="comment">/* $end sbufc */</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>item信号量控制缓冲区剩余的资源量，mutex是缓冲区的互斥锁，slot信号量表示空余的缓冲区</p>
+<blockquote>
+<p>Like the solutions to many synchronization problems, it is subtle and deceptively simple. The w semaphore controls access to the critical sections that access the shared object. The mutex semaphore protects access to the shared readcnt variable, which counts the number of readers currently in the critical section. A writer locks the w mutex each time it enters the critical section, and unlocks it each time it leaves. This guarantees that there is at most one writer in the critical section at any point in time. On the other hand, only the first reader to enter the critical section locks w, and only the last reader to leave the critical section unlocks it. The w mutex is ignored by readers who enter and leave while other readers are present. This means that as long as a single reader holds the w mutex, an unbounded number of readers can enter the critical section unimpeded.</p>
+</blockquote>
+<h3 id="第一个读者-写者解法-读者优先"><a href="#第一个读者-写者解法-读者优先" class="headerlink" title="第一个读者-写者解法(读者优先)"></a>第一个读者-写者解法(读者优先)</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Global variables */</span></span><br><span class="line"><span class="type">int</span> readcnt; <span class="comment">/* Initially = 0 */</span></span><br><span class="line"><span class="type">sem_t</span> mutex, w; <span class="comment">/* Both initially = 1 */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">reader</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">		P(&amp;mutex);</span><br><span class="line">		readcnt++;</span><br><span class="line">		<span class="keyword">if</span> (readcnt == <span class="number">1</span>) <span class="comment">/* First in */</span></span><br><span class="line">			P(&amp;w);</span><br><span class="line">		V(&amp;mutex);</span><br><span class="line">		<span class="comment">/* Critical section */</span></span><br><span class="line">		<span class="comment">/* Reading happens */</span></span><br><span class="line">		P(&amp;mutex);</span><br><span class="line">		readcnt--;</span><br><span class="line">		<span class="keyword">if</span> (readcnt == <span class="number">0</span>) <span class="comment">/* Last out */</span></span><br><span class="line">			V(&amp;w);</span><br><span class="line">		V(&amp;mutex);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">writer</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">		P(&amp;w);</span><br><span class="line">		<span class="comment">/* Critical section */</span></span><br><span class="line">		<span class="comment">/* Writing happens */</span></span><br><span class="line">		V(&amp;w);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>mutex 保护readcnt(代表当前的Reader数量),w保护代码的临界区，确保一段时间只有1个线程在读写</p>
+<h3 id="第二个读者-写者解法-写者优先"><a href="#第二个读者-写者解法-写者优先" class="headerlink" title="第二个读者-写者解法(写者优先)"></a>第二个读者-写者解法(写者优先)</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">   COPYRIGHT: CSAPP author RB</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* My thoughts</span></span><br><span class="line"><span class="comment">   For the second rw problem, we give the writers have higher priority</span></span><br><span class="line"><span class="comment">   than readers.That is when a writer arrives at some time, it will wait</span></span><br><span class="line"><span class="comment">   all the readers in critical section currently to finish their work,</span></span><br><span class="line"><span class="comment">   and at the same time, prevent any incoming readers entering their critical</span></span><br><span class="line"><span class="comment">   section ,by doing a P operation on r.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> NITERS 100</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Sample code demonstrating reader-writers, using 2nd readers-writers</span></span><br><span class="line"><span class="comment"> * solution</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Create NITERS agents, numbered from 1 to NITERS.  Each agent is</span></span><br><span class="line"><span class="comment"> * randomly chosen to bea reader (probability 80%) or a writer</span></span><br><span class="line"><span class="comment"> * (probability 20%).  Writers assign their ID to the global value.</span></span><br><span class="line"><span class="comment"> * Readers read the global value.  Also insert random delays in agent</span></span><br><span class="line"><span class="comment"> * generation so that writers can catch up to the readers.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;csapp.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdbool.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Uniform random number in [0.0,1.0] */</span></span><br><span class="line"><span class="type">static</span> <span class="type">double</span> <span class="title function_">uniform</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> (<span class="type">double</span>) random() / RAND_MAX;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">bool</span> <span class="title function_">choose_with_probability</span><span class="params">(<span class="type">double</span> prob)</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> uniform() &lt;=  prob;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/* $begin reader1 */</span></span><br><span class="line"><span class="comment">/* Global variables */</span></span><br><span class="line"><span class="type">int</span> readcnt, writecnt; <span class="comment">/* All initially = 0 */</span></span><br><span class="line"><span class="type">sem_t</span> rmutex, wmutex, r, w;     <span class="comment">/* All initially = 1 */</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">init</span><span class="params">()</span> &#123;</span><br><span class="line">	readcnt = <span class="number">0</span>;</span><br><span class="line">	writecnt = <span class="number">0</span>;</span><br><span class="line">	Sem_init(&amp;rmutex, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">	Sem_init(&amp;wmutex, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">	Sem_init(&amp;w, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">	Sem_init(&amp;r, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Get read access to data and read */</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">ireader</span><span class="params">(<span class="type">int</span> *buf)</span></span><br><span class="line">&#123;</span><br><span class="line">	P(&amp;r);   <span class="comment">// Permission to attempt read</span></span><br><span class="line">	P(&amp;rmutex);</span><br><span class="line">	readcnt++;</span><br><span class="line">	<span class="keyword">if</span> (readcnt == <span class="number">1</span>) <span class="comment">/* First in */</span></span><br><span class="line">		P(&amp;w); <span class="comment">// Block writers</span></span><br><span class="line">	V(&amp;rmutex);</span><br><span class="line">	V(&amp;r);</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Critical section */</span></span><br><span class="line">	<span class="type">int</span> v = *buf;</span><br><span class="line"></span><br><span class="line">	P(&amp;rmutex);</span><br><span class="line">	readcnt--;</span><br><span class="line">	<span class="keyword">if</span> (readcnt == <span class="number">0</span>) <span class="comment">/* Last out */</span></span><br><span class="line">		V(&amp;w);</span><br><span class="line">	V(&amp;rmutex);</span><br><span class="line">	<span class="keyword">return</span> v;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Get write access to data and write */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">iwriter</span><span class="params">(<span class="type">int</span> *buf, <span class="type">int</span> v)</span></span><br><span class="line">&#123;</span><br><span class="line">	P(&amp;wmutex);</span><br><span class="line">	writecnt++;</span><br><span class="line">	<span class="keyword">if</span> (writecnt == <span class="number">1</span>)</span><br><span class="line">		P(&amp;r);  <span class="comment">// Block readers</span></span><br><span class="line">	V(&amp;wmutex);</span><br><span class="line"></span><br><span class="line">	P(&amp;w);</span><br><span class="line">	<span class="comment">/* Critical section */</span></span><br><span class="line">	*buf = v;</span><br><span class="line">	<span class="comment">/* Writing happens  */</span></span><br><span class="line">	V(&amp;w);</span><br><span class="line"></span><br><span class="line">	P(&amp;wmutex);</span><br><span class="line">	writecnt--;</span><br><span class="line">	<span class="keyword">if</span> (writecnt == <span class="number">0</span>)</span><br><span class="line">		V(&amp;r);  <span class="comment">// Enable readers</span></span><br><span class="line">	V(&amp;wmutex);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> global_value = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> *<span class="title function_">rthread</span><span class="params">(<span class="type">void</span> *vargp)</span> &#123;</span><br><span class="line">	<span class="type">int</span> id = *(<span class="type">int</span> *) vargp;</span><br><span class="line">	Free(vargp);</span><br><span class="line">	<span class="type">int</span> v = ireader(&amp;global_value);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Reader %d read value %d\n&quot;</span>, id, v);</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> *<span class="title function_">wthread</span><span class="params">(<span class="type">void</span> *vargp)</span> &#123;</span><br><span class="line">	<span class="type">int</span> id = *(<span class="type">int</span> *) vargp;</span><br><span class="line">	Free(vargp);</span><br><span class="line">	iwriter(&amp;global_value, id);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Writer %d wrote value %d\n&quot;</span>, id, id);</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span> &#123;</span><br><span class="line">	<span class="type">int</span> niters = NITERS;</span><br><span class="line">	<span class="keyword">if</span> (argc &gt; <span class="number">1</span>)</span><br><span class="line">		niters = atoi(argv[<span class="number">1</span>]);</span><br><span class="line">	<span class="type">pthread_t</span> tid[niters];</span><br><span class="line">	init();</span><br><span class="line">	<span class="type">int</span> id;</span><br><span class="line">	<span class="keyword">for</span> (id = <span class="number">1</span>; id &lt;= niters; id++) &#123;</span><br><span class="line">		<span class="type">bool</span> doread = choose_with_probability(<span class="number">0.8</span>);</span><br><span class="line">		<span class="type">void</span> *vargp = Malloc(<span class="keyword">sizeof</span>(<span class="type">int</span>));</span><br><span class="line">		*(<span class="type">int</span> *) vargp = id;</span><br><span class="line">		Pthread_create(&amp;tid[id<span class="number">-1</span>], <span class="literal">NULL</span>,</span><br><span class="line">				doread ? rthread : wthread,</span><br><span class="line">				vargp);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (id = <span class="number">1</span>; id &lt;= niters; id++) &#123;</span><br><span class="line">		Pthread_join(tid[id<span class="number">-1</span>], <span class="literal">NULL</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>Geek_Cat
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="http://zhzhzhy.github.io/en/2021/04/18/2021/concurrent_programming/" title="CSAPP中并发编程的一些概念总结">http://zhzhzhy.github.io/en/2021/04/18/2021/concurrent_programming/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/en/tags/CSAPP/" rel="tag"># CSAPP</a>
+              <a href="/en/tags/concurrent/" rel="tag"># concurrent</a>
+              <a href="/en/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag"># 操作系统</a>
+              <a href="/en/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag"># 多线程</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/en/2021/04/17/2021/Hexo-deploy-action/" rel="prev" title="使用Github action自动部署Hexo博客到Github pages">
+                  <i class="fa fa-chevron-left"></i> 使用Github action自动部署Hexo博客到Github pages
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/en/2021/04/18/2021/Dining_philosophers_problem/" rel="next" title="哲学家进餐问题(Dining philosophers problem)">
+                  哲学家进餐问题(Dining philosophers problem) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Geek_Cat</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/en/js/comments.js"></script><script src="/en/js/utils.js"></script><script src="/en/js/motion.js"></script><script src="/en/js/next-boot.js"></script><script src="/en/js/bookmark.js"></script>
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.0/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/en/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/en/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"zhzhy-ml-en","count":true,"lazyload":false,"i18n":{"disqus":"disqus"}}</script>
+<script src="/en/js/third-party/comments/disqus.js"></script>
+
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js');
+  });
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/en/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/en/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/en/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/en/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/en/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=EB+Garamond:300,300italic,400,400italic,700,700italic%7CNoto+Serif+SC:300,300italic,400,400italic,700,700italic%7CLong+Cang:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhzhzhy.github.io","root":"/en/","images":"/en/images","scheme":"Pisces","darkmode":true,"version":"8.12.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"default"},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/en/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/en/js/config.js"></script>
+
+    <meta name="description" content="从ESP8266自组织网络谈起 ESP-WIFI-MESH 分布式、去中心化、共识 Apple Find my:一种更广泛的分布式位置网络 Apple的查找(Find My)网络工作原理 对称加密和非对称加密 椭圆曲线加密算法(Elliptic Curve Cryptography) 什么是椭圆曲线? 阿贝尔群(abelian group) 椭圆曲线中的阿贝尔群 椭圆曲线加解密算法原理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分布式“无网络”传感器|由Apple AirTag对未来物联网的展望">
+<meta property="og:url" content="http://zhzhzhy.github.io/en/2022/03/23/2022/find_my_network/index.html">
+<meta property="og:site_name" content="Geek_Cat&#39;s">
+<meta property="og:description" content="从ESP8266自组织网络谈起 ESP-WIFI-MESH 分布式、去中心化、共识 Apple Find my:一种更广泛的分布式位置网络 Apple的查找(Find My)网络工作原理 对称加密和非对称加密 椭圆曲线加密算法(Elliptic Curve Cryptography) 什么是椭圆曲线? 阿贝尔群(abelian group) 椭圆曲线中的阿贝尔群 椭圆曲线加解密算法原理">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2022/03/23/2022/find_my_network/ESP-MESH-Network-ESP32-ESP8266i.webp">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2022/03/23/2022/find_my_network/1.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2022/03/23/2022/find_my_network/OpenHaystack-Screenshot.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2022/03/23/2022/find_my_network/8.jpg">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2022/03/23/2022/find_my_network/3.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2022/03/23/2022/find_my_network/2.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2022/03/23/2022/find_my_network/4.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2022/03/23/2022/find_my_network/5.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2022/03/23/2022/find_my_network/6.png">
+<meta property="og:image" content="http://zhzhzhy.github.io/en/2022/03/23/2022/find_my_network/7.png">
+<meta property="article:published_time" content="2022-03-23T00:00:00.000Z">
+<meta property="article:modified_time" content="2022-07-17T15:35:09.982Z">
+<meta property="article:author" content="Geek_Cat">
+<meta property="article:tag" content="AirTag">
+<meta property="article:tag" content="Find My Network">
+<meta property="article:tag" content="openhaystack">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zhzhzhy.github.io/en/2022/03/23/2022/find_my_network/ESP-MESH-Network-ESP32-ESP8266i.webp">
+
+
+<link rel="canonical" href="http://zhzhzhy.github.io/en/2022/03/23/2022/find_my_network/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://zhzhzhy.github.io/en/2022/03/23/2022/find_my_network/","path":"2022/03/23/2022/find_my_network/","title":"分布式“无网络”传感器|由Apple AirTag对未来物联网的展望"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>分布式“无网络”传感器|由Apple AirTag对未来物联网的展望 | Geek_Cat's</title>
+  
+
+
+
+
+<link rel="manifest" href="/manifest.json" />
+  <noscript>
+    <link rel="stylesheet" href="/en/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/en/atom.xml" title="Geek_Cat's" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/en/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Geek_Cat's</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Years may wrinkle the skin, but to give up enthusiasm wrinkles the soul</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/en/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/en/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/en/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/en/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/en/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-my-github-profile"><a href="https://github.com/zhzhzhy" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>My GitHub profile</a></li><li class="menu-item menu-item-简体中文-chinese"><a href="http://zhzhzhy.github.io/" rel="section"><i class="fa fa-language fa-fw"></i>简体中文 Chinese</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8EESP8266%E8%87%AA%E7%BB%84%E7%BB%87%E7%BD%91%E7%BB%9C%E8%B0%88%E8%B5%B7-ESP-WIFI-MESH"><span class="nav-number">1.</span> <span class="nav-text">从ESP8266自组织网络谈起 ESP-WIFI-MESH</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E3%80%81%E5%8E%BB%E4%B8%AD%E5%BF%83%E5%8C%96%E3%80%81%E5%85%B1%E8%AF%86"><span class="nav-number">2.</span> <span class="nav-text">分布式、去中心化、共识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Apple-Find-my-%E4%B8%80%E7%A7%8D%E6%9B%B4%E5%B9%BF%E6%B3%9B%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E4%BD%8D%E7%BD%AE%E7%BD%91%E7%BB%9C"><span class="nav-number">3.</span> <span class="nav-text">Apple Find my:一种更广泛的分布式位置网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Apple%E7%9A%84%E6%9F%A5%E6%89%BE-Find-My-%E7%BD%91%E7%BB%9C%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">4.</span> <span class="nav-text">Apple的查找(Find My)网络工作原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E5%92%8C%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86"><span class="nav-number">4.1.</span> <span class="nav-text">对称加密和非对称加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95-Elliptic-Curve-Cryptography"><span class="nav-number">4.2.</span> <span class="nav-text">椭圆曲线加密算法(Elliptic Curve Cryptography)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF"><span class="nav-number">4.2.1.</span> <span class="nav-text">什么是椭圆曲线?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%98%BF%E8%B4%9D%E5%B0%94%E7%BE%A4-abelian-group"><span class="nav-number">4.2.2.</span> <span class="nav-text">阿贝尔群(abelian group)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E4%B8%AD%E7%9A%84%E9%98%BF%E8%B4%9D%E5%B0%94%E7%BE%A4"><span class="nav-number">4.2.3.</span> <span class="nav-text">椭圆曲线中的阿贝尔群</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%8A%A0%E8%A7%A3%E5%AF%86%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86"><span class="nav-number">4.2.4.</span> <span class="nav-text">椭圆曲线加解密算法原理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Find-My-%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">4.3.</span> <span class="nav-text">Find My 工作原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Apple-Find-My%E5%9C%A8%E2%80%9C%E6%97%A0%E7%BD%91%E7%BB%9C%E2%80%9D%E7%8E%AF%E5%A2%83%E5%8F%91%E9%80%81%E4%BB%BB%E6%84%8F%E6%96%87%E6%9C%AC%E6%95%B0%E6%8D%AE"><span class="nav-number">5.</span> <span class="nav-text">使用Apple Find My在“无网络”环境发送任意文本数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%A7%E6%A6%82%E6%98%AF%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%91%A2"><span class="nav-number">5.1.</span> <span class="nav-text">大概是怎么实现的呢?</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%96%E7%A0%81%E5%8F%91%E9%80%81"><span class="nav-number">5.1.1.</span> <span class="nav-text">编码发送</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%A5%E6%94%B6%E8%A7%A3%E7%A0%81"><span class="nav-number">5.1.2.</span> <span class="nav-text">接收解码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%A7%E8%83%BD"><span class="nav-number">5.1.3.</span> <span class="nav-text">性能</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%99%85%E7%9A%84%E5%BA%94%E7%94%A8%E4%B8%8E%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E9%98%B2%E8%8C%83"><span class="nav-number">6.</span> <span class="nav-text">实际的应用与网络安全防范</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E6%96%B0%E7%9A%84%E9%A1%B9%E7%9B%AE%E8%BF%9B%E5%B1%95"><span class="nav-number">7.</span> <span class="nav-text">最新的项目进展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AA%E6%9D%A5%E7%9A%84%E7%89%A9%E8%81%94%E7%BD%91%E4%BC%A0%E6%84%9F%E5%99%A8%E7%BD%91%E7%BB%9C%E5%8F%91%E5%B1%95%E6%96%B9%E5%90%91"><span class="nav-number">8.</span> <span class="nav-text">未来的物联网传感器网络发展方向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE%E5%8F%8A%E8%B5%84%E6%96%99-References"><span class="nav-number">9.</span> <span class="nav-text">参考文献及资料(References)</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Geek_Cat</p>
+  <div class="site-description" itemprop="description">Geek & Coder & Vimer</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/en/archives/">
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/en/categories/">
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/en/tags/">
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhzhzhy" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zhzhzhy" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/en/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/zhzhzhy" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://zhzhzhy.github.io/en/2022/03/23/2022/find_my_network/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/en/images/avatar.gif">
+      <meta itemprop="name" content="Geek_Cat">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Geek_Cat's">
+      <meta itemprop="description" content="Geek & Coder & Vimer">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="分布式“无网络”传感器|由Apple AirTag对未来物联网的展望 | Geek_Cat's">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          分布式“无网络”传感器|由Apple AirTag对未来物联网的展望
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-03-23 00:00:00" itemprop="dateCreated datePublished" datetime="2022-03-23T00:00:00+00:00">2022-03-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-07-17 15:35:09" itemprop="dateModified" datetime="2022-07-17T15:35:09+00:00">2022-07-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/en/categories/Apple/" itemprop="url" rel="index"><span itemprop="name">Apple</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/en/categories/Apple/Bluetooth/" itemprop="url" rel="index"><span itemprop="name">Bluetooth</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/en/categories/Apple/Bluetooth/location-privacy/" itemprop="url" rel="index"><span itemprop="name">location privacy</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/en/categories/Apple/Bluetooth/location-privacy/reverse-engineering/" itemprop="url" rel="index"><span itemprop="name">reverse engineering</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/en/categories/Apple/Bluetooth/location-privacy/reverse-engineering/trackings-tags/" itemprop="url" rel="index"><span itemprop="name">trackings tags</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/en/categories/Apple/Bluetooth/location-privacy/reverse-engineering/trackings-tags/user-identification/" itemprop="url" rel="index"><span itemprop="name">user identification</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/en/2022/03/23/2022/find_my_network/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/03/23/2022/find_my_network/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <!-- vim-markdown-toc GFM -->
+
+<ul>
+<li><a href="#%E4%BB%8Eesp8266%E8%87%AA%E7%BB%84%E7%BB%87%E7%BD%91%E7%BB%9C%E8%B0%88%E8%B5%B7-esp-wifi-mesh">从ESP8266自组织网络谈起 ESP-WIFI-MESH</a></li>
+<li><a href="#%E5%88%86%E5%B8%83%E5%BC%8F%E5%8E%BB%E4%B8%AD%E5%BF%83%E5%8C%96%E5%85%B1%E8%AF%86">分布式、去中心化、共识</a></li>
+<li><a href="#apple-find-my%E4%B8%80%E7%A7%8D%E6%9B%B4%E5%B9%BF%E6%B3%9B%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E4%BD%8D%E7%BD%AE%E7%BD%91%E7%BB%9C">Apple Find my:一种更广泛的分布式位置网络</a></li>
+<li><a href="#apple%E7%9A%84%E6%9F%A5%E6%89%BEfind-my%E7%BD%91%E7%BB%9C%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86">Apple的查找(Find My)网络工作原理</a><ul>
+<li><a href="#%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E5%92%8C%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86">对称加密和非对称加密</a></li>
+<li><a href="#%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95elliptic-curve-cryptography">椭圆曲线加密算法(Elliptic Curve Cryptography)</a><ul>
+<li><a href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF">什么是椭圆曲线?</a></li>
+<li><a href="#%E9%98%BF%E8%B4%9D%E5%B0%94%E7%BE%A4abelian-group">阿贝尔群(abelian group)</a></li>
+<li><a href="#%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E4%B8%AD%E7%9A%84%E9%98%BF%E8%B4%9D%E5%B0%94%E7%BE%A4">椭圆曲线中的阿贝尔群</a></li>
+<li><a href="#%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%8A%A0%E8%A7%A3%E5%AF%86%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86">椭圆曲线加解密算法原理</a></li>
+</ul>
+</li>
+<li><a href="#find-my-%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86">Find My 工作原理</a></li>
+</ul>
+</li>
+<li><a href="#%E4%BD%BF%E7%94%A8apple-find-my%E5%9C%A8%E6%97%A0%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83%E5%8F%91%E9%80%81%E4%BB%BB%E6%84%8F%E6%96%87%E6%9C%AC%E6%95%B0%E6%8D%AE">使用Apple Find My在“无网络”环境发送任意文本数据</a><ul>
+<li><a href="#%E5%A4%A7%E6%A6%82%E6%98%AF%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%91%A2">大概是怎么实现的呢?</a><ul>
+<li><a href="#%E7%BC%96%E7%A0%81%E5%8F%91%E9%80%81">编码发送</a></li>
+<li><a href="#%E6%8E%A5%E6%94%B6%E8%A7%A3%E7%A0%81">接收解码</a></li>
+<li><a href="#%E6%80%A7%E8%83%BD">性能</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%AE%9E%E9%99%85%E7%9A%84%E5%BA%94%E7%94%A8%E4%B8%8E%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E9%98%B2%E8%8C%83">实际的应用与网络安全防范</a></li>
+<li><a href="#%E6%9C%80%E6%96%B0%E7%9A%84%E9%A1%B9%E7%9B%AE%E8%BF%9B%E5%B1%95">最新的项目进展</a></li>
+<li><a href="#%E6%9C%AA%E6%9D%A5%E7%9A%84%E7%89%A9%E8%81%94%E7%BD%91%E4%BC%A0%E6%84%9F%E5%99%A8%E7%BD%91%E7%BB%9C%E5%8F%91%E5%B1%95%E6%96%B9%E5%90%91">未来的物联网传感器网络发展方向</a></li>
+<li><a href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE%E5%8F%8A%E8%B5%84%E6%96%99references">参考文献及资料(References)</a></li>
+</ul>
+<!-- vim-markdown-toc -->
+
+<p>无论从世界局势还是技术革新等层面，当今世界正在经历百年未有之大变局，移动互联的底层技术、算法，数学世界微妙的定理，可知世界那些看不见的事物，却往往成为现代社会不可替代的数字化和信息化互联网的基石。</p>
+<h2 id="从ESP8266自组织网络谈起-ESP-WIFI-MESH"><a href="#从ESP8266自组织网络谈起-ESP-WIFI-MESH" class="headerlink" title="从ESP8266自组织网络谈起 ESP-WIFI-MESH"></a>从ESP8266自组织网络谈起 ESP-WIFI-MESH</h2><blockquote>
+<p>ESP-WIFI-MESH 是一种无线通信网络，采用树状拓扑结构，其节点具有乐鑫 SoC 的 AP-STA 特性。ESP-WIFI-MESH 能够提供一个易于部署、自动组网并自我修复的网络。它无需部署 Wi-Fi 基础设施，就能在更大范围内部署节点，基于这种网络拓扑结构，它最多可以扩展到 1000 个节点。这样一来，ESP-WIFI-MESH 也可用于在家庭部署中覆盖 Wi-Fi 信号无法到达的盲点。</p>
+</blockquote>
+<p><img src="/en/2022/03/23/2022/find_my_network/ESP-MESH-Network-ESP32-ESP8266i.webp"></p>
+<p>esp8266，wifi模块，玩嵌入式的应该都不陌生，一个esp8266作为一个node，可以部署一个自组织的网络，此网络少数node掉线不会影响整个网络的通信，设备能够根据节点信号的强度值自动连接信号强的节点，在网络故障时仍保证网络的稳定性，这也是ESP-WIFI-MESH的自我修复特性。</p>
+<h2 id="分布式、去中心化、共识"><a href="#分布式、去中心化、共识" class="headerlink" title="分布式、去中心化、共识"></a>分布式、去中心化、共识</h2><p>在计算机技术领域，去中心化结构使用分布式核算和存储，不存在中心化的节点，任意节点的权利和义务都是均等的，系统中的数据块由整个系统中具有维护功能的节点来共同维护，任一节点停止工作都不会影响系统整体的运作。<br>去中心化是分布式网络结构中的一种，所有的去中心化都是采用分布式网络结构的，而分布式网络结构可能是“中心化”也可能是“去中心化”的</p>
+<p><img src="/en/2022/03/23/2022/find_my_network/1.png" alt="1.png"></p>
+<blockquote>
+<p>去中心化和共识是两个不同的概念，两者结合才是真正意义上的“去中心化”，去中心化有了共识才具备了完全的可信度，否则只是狭义概念的数据共享，没人知道这些共享的数据是否真实，或者被集体认可，仅仅只是拥有这些信息；共识有了去中心化，就具备了安全性，系统很难被攻破，信息也难被篡改；再加上特殊的数据结构，而这一切的实现就是区块链。</p>
+</blockquote>
+<h2 id="Apple-Find-my-一种更广泛的分布式位置网络"><a href="#Apple-Find-my-一种更广泛的分布式位置网络" class="headerlink" title="Apple Find my:一种更广泛的分布式位置网络"></a>Apple Find my:一种更广泛的分布式位置网络</h2><blockquote>
+<p>Overnight, Apple has turned its hundreds-of­million-device ecosystem into the world’s largest crowd­sourced location tracking network called offine ﬁnding (OF). OF leverages online ﬁnder devices to detect the presence of missing onine devices using Bluetooth and report an approximate location back to the owner via the Internet. While OF is not the ﬁrst system of its kind, it is the ﬁrst to commit to strong privacy goals. In particular, OF aims to ensure ﬁnder anonymity, un­trackability of owner devices, and conﬁdentiality of lo­cation reports.</p>
+</blockquote>
+<p>熟悉苹果设备和苹果生态的朋友，应该对“查找”这一功能并不陌生，只要是使用同一 Apple ID 登录的设备，当你不慎将其丢失或遗忘位置时，即可使用“查找”对其定位或发出声响，特殊情况下还可以选择抹除资料避免信息泄露。</p>
+<p>得益于全世界苹果设备的保有量(全球活跃约18亿台，截至2022年1月28日)，以及全球的广泛分布¹， 苹果的Find My已经作为icloud基础设施使用，利用庞大的用户量、广泛分布的苹果设备，用户可以获得比Android等其他移动设备更好的设备查找和定位体验。</p>
+<p>AirTag是苹果公司于2021年4月21日凌晨在2021苹果春季新品发布会上推出的一款蓝牙跟踪设备。</p>
+<p>Airtag的离线查找恰好利用了Find My网络，可以在世界任意角落找到你丢失的Airtag(理论上)</p>
+<h2 id="Apple的查找-Find-My-网络工作原理"><a href="#Apple的查找-Find-My-网络工作原理" class="headerlink" title="Apple的查找(Find My)网络工作原理"></a>Apple的查找(Find My)网络工作原理</h2><p>德国达姆施塔特的公立大学(Technical University of Darmstadt)的移动网络安全实验室(Secure Mobile Networking Lab)在2019年6月开始对苹果的Find My 进行逆向工程和安全分析，大部分研究结果在2021年3月公开，期间发现的最严重的一个漏洞<a target="_blank" rel="noopener" href="https://support.apple.com/en-us/HT211849">CVE-2020-9986</a> (允许恶意软件访问位置数据)已经被苹果修复</p>
+<p>在发布论文的时候，他们开源了一个叫做OpenHaystack的项目，这个开源项目可以让你创建自己的配件，被苹果的Find My网络跟踪</p>
+<p><img src="/en/2022/03/23/2022/find_my_network/OpenHaystack-Screenshot.png"></p>
+<center>openhaystack mac端</center>
+<br>
+
+<p><img src="/en/2022/03/23/2022/find_my_network/8.jpg"></p>
+<p>苹果的“查找”功能利用蓝牙广播，公钥加密技术以及中心加密的位置报告数据库，基于椭圆曲线加密算法(Elliptic Curve Cryptography)的安全性， 私钥在用户手中，苹果声称位置报告、查找设备标志 被加密和隐藏了，并且蓝牙广播无法直接用于跟踪用户，安全性和隐私性没有任何问题。</p>
+<p><strong>简单介绍一下椭圆曲线加密算法</strong></p>
+<h3 id="对称加密和非对称加密"><a href="#对称加密和非对称加密" class="headerlink" title="对称加密和非对称加密"></a>对称加密和非对称加密</h3><p>对称加密(Symmetric-key algorithm)指<strong>加密和解密使用相同密钥</strong>的加密算法。常见的对称加密算法有DES、3DES、AES</p>
+<p>非对称加密(public-key cryptography OR asymmetric cryptography)是<strong>加密和解密使用不同密钥</strong>，使用公钥/私钥对中的公钥来加密明文，然后使用对应的私钥来解密密文的过程。RSA、Elgamal、背包算法、Rabin、Diffie-Hellman、ECC属于非对此加密，使用最广泛的是RSA算法</p>
+<h3 id="椭圆曲线加密算法-Elliptic-Curve-Cryptography"><a href="#椭圆曲线加密算法-Elliptic-Curve-Cryptography" class="headerlink" title="椭圆曲线加密算法(Elliptic Curve Cryptography)"></a>椭圆曲线加密算法(Elliptic Curve Cryptography)</h3><p>椭圆曲线加密算法，简称ECC，是基于椭圆曲线数学理论实现的一种非对称加密算法。相比RSA，ECC优势是可以使用更短的密钥，来实现与RSA相当或更高的安全，RSA加密算法也是一种非对称加密算法，在公开密钥加密和电子商业中RSA被广泛使用。RSA算法是当前最流行也是最明了的公钥密码学系统。它的安全性基于因式分解的缓慢和乘法的快速的事实上。</p>
+<h4 id="什么是椭圆曲线"><a href="#什么是椭圆曲线" class="headerlink" title="什么是椭圆曲线?"></a>什么是椭圆曲线?</h4><p>Wolfram MathWorld（线上数学百科全书，<a target="_blank" rel="noopener" href="http://mathworld.wolfram.com)/">http://mathworld.wolfram.com）</a> 给出了非常精准的定义：<br>一条椭圆曲线就是一组被 $y^2 = x^3 + ax + b$定义的且满足 $4a^3 + 27b^2 ≠ 0$ 的点集。</p>
+<p>$4a^3 + 27b^2 ≠ 0$ 这个限定条件是为了保证曲线不包含奇点（在数学中是指曲线上任意一点都存在切线）。</p>
+<p><img src="/en/2022/03/23/2022/find_my_network/3.png"></p>
+<h4 id="阿贝尔群-abelian-group"><a href="#阿贝尔群-abelian-group" class="headerlink" title="阿贝尔群(abelian group)"></a>阿贝尔群(abelian group)</h4><p>阿贝尔群的概念是抽象代数的基本概念之一，是一种代数结构，由一个集合以及一个二元运算所组成。<br>如果一个集合或者运算是群的话，就必须满足以下条件（+ 表示二元运算）：</p>
+<ol>
+<li>封闭性（closure），如果a和b被包含于群，那么a+b也一定是群的元素；</li>
+<li>结合律(associativity)；</li>
+<li>存在一个单位元（identity element）0，0与任意元素运算不改变其值的元素，即 $a+0 = 0+a = a$；</li>
+<li>每个元素都存在一个逆元(inverse)；</li>
+<li>交换律(commutativity)，即 $a+b = b+a$；</li>
+</ol>
+<h4 id="椭圆曲线中的阿贝尔群"><a href="#椭圆曲线中的阿贝尔群" class="headerlink" title="椭圆曲线中的阿贝尔群"></a>椭圆曲线中的阿贝尔群</h4><p>我们可以在椭圆曲线上定义一个群：</p>
+<ol>
+<li>群中的元素就是椭圆曲线上的点；</li>
+<li>单位元就是无穷处的点0；</li>
+<li>相反数P，是关于X轴对称的另一边的点；</li>
+<li>二元运算规则定义如下：取一条直线上的三点（这条直线和椭圆曲线相交的三点），P, Q, R（皆非零），他们的总和等于0，$P+Q+R=0$。</li>
+</ol>
+<p>可以证明，椭圆曲线符合阿贝尔群。</p>
+<p>因为在安全性、加解密性能、网络消耗方面有较大优势，ECC加密算法大有取代RSA成为下一代主流加密算法的趋势。如今ECC应用范围很广，在TLS、区块链（比特币、以太坊等等）、SM2国密算法、证书、银行政府机构等许多方面都有大量应用。</p>
+<p>椭圆曲线算法涉及阿贝尔群、有限群等群论知识，密钥交换涉及伽罗瓦域,具体的细节比较复杂，这里就不过多展开了，详细可以参考这篇论文：<a target="_blank" rel="noopener" href="https://iacr.org/archive/pkc2003/25670211/25670211.pdf">ECIES</a></p>
+<h4 id="椭圆曲线加解密算法原理"><a href="#椭圆曲线加解密算法原理" class="headerlink" title="椭圆曲线加解密算法原理"></a>椭圆曲线加解密算法原理</h4><p>设私钥、公钥分别为d、Q，即$Q = dG$，其中G为基点，椭圆曲线上的已知G和dG，求d是非常困难的，也就是说已知公钥和基点，想要算出私钥是非常困难的。<br>公钥加密：选择随机数r，将消息M生成密文C，该密文是一个点对，$C = {rG, M+rQ}$，其中Q为公钥。<br>私钥解密：<br>$M + rQ - d(rG) = M + r(dG) - d(rG) = M$，其中d、Q分别为私钥、公钥。</p>
+<h3 id="Find-My-工作原理"><a href="#Find-My-工作原理" class="headerlink" title="Find My 工作原理"></a>Find My 工作原理</h3><ol>
+<li> AirTag跟苹果设备配对的时候，保留在AirTag上的公钥和用于生成滚动公钥的共享密钥一起生成椭圆曲线密钥对</li>
+<li>每2秒，AirTag用上一步的共享密钥(这个每15分钟会更新一次)，发送一个以公钥为内容的低功耗蓝牙广播</li>
+<li>附近的iphone，macbook之类的可是识别Find My广播的设备，对搜索他当前的位置，然后用广播的公钥加密位置信息，然后上传这个加密的位置报告</li>
+<li>在搜索设备的时候，这个设备的配对多有着，会生成AirTag这几天用的滚动公钥列表，并且查询苹果服务来获得他的SHA256哈希值，苹果的后台就会返回所请求密钥的加密位置报告<br>那么设备的所有者就可以解密位置报告并且显示大致的位置</li>
+</ol>
+<p><img src="/en/2022/03/23/2022/find_my_network/2.png"></p>
+<p>这种做法有一些安全上的特性：</p>
+<ul>
+<li>滚动公钥可以保护附近的设备</li>
+<li>苹果官方无法访问用户位置</li>
+</ul>
+<p>苹果是不知道哪些公钥是属于你的AirTag设备的，因此他也不知道哪些位置报告是你的，所以你去请求特定密钥的位置报告，是不需要授权的，知道密钥就可以直接要。同时位置报告通过了加密，所以就只能用存在配对的所有者设备上的私钥要解密。</p>
+<blockquote>
+<p>OF(offline finding) employs elliptic curve cryptography (ECC) for en­crypting location reports. ECC is a public-key encryp­tion scheme that uses operations on elliptic curve (EC) over ﬁnite ﬁelds. An EC is a curve over a ﬁnite ﬁeld that contains a known generator (or base point) G. A private key in ECC is a random number in the ﬁnite ﬁeld of the used curve. The public key is the result of the point multiplication of the generator G with the pri­vate key. The result is an X–Y coordinate on the curve. The NIST P-224 curve [39], which is used by OF [6], provides a security level of 112 bit.</p>
+</blockquote>
+<h2 id="使用Apple-Find-My在“无网络”环境发送任意文本数据"><a href="#使用Apple-Find-My在“无网络”环境发送任意文本数据" class="headerlink" title="使用Apple Find My在“无网络”环境发送任意文本数据"></a>使用Apple Find My在“无网络”环境发送任意文本数据</h2><p>原文地址</p>
+<p><a target="_blank" rel="noopener" href="https://positive.security/blog/send-my">Send My: Arbitrary data transmission via Apple’s Find My network</a></p>
+<blockquote>
+<p>With the recent release of Apple’s AirTags, I was curious whether Find My’s Offline Finding network could be (ab)used to upload arbitrary data to the Internet, from devices that are not connected to WiFi or mobile internet. The data would be broadcasted via Bluetooth Low Energy and picked up by nearby Apple devices, that, once they are connected to the Internet, forward the data to Apple servers where it could later be retrieved from. Such a technique could be employed by small sensors in uncontrolled environments to avoid the cost and power-consumption of mobile internet. It could also be interesting for exfiltrating data from Faraday-shielded sites that are occasionally visited by iPhone users.</p>
+</blockquote>
+<p>作者在<a target="_blank" rel="noopener" href="https://github.com/seemoo-lab/openhaystack">Openhaystack</a>的基础上进行二次开发</p>
+<p>通过给附近的苹果设备发送Find My蓝牙广播，可以让没有互联网连接的设备上传数据</p>
+<p>用ESP32做了一个上传数据的网关，并且还写了一个macOS的程序来接收数据，ESP32固件以及macOS程序在github上开源</p>
+<p><img src="/en/2022/03/23/2022/find_my_network/4.png"></p>
+<h3 id="大概是怎么实现的呢"><a href="#大概是怎么实现的呢" class="headerlink" title="大概是怎么实现的呢?"></a>大概是怎么实现的呢?</h3><h4 id="编码发送"><a href="#编码发送" class="headerlink" title="编码发送"></a>编码发送</h4><blockquote>
+<p>To send a full message, the program simply loops over its bits and sends out one advertisement per bit with the public key that encodes its index and value.</p>
+</blockquote>
+<ol>
+<li>假设有一个message需要发送</li>
+<li>每次取出这个message的第index位比特值value</li>
+<li>用index和value，以及消息ID和补充的0位，构成一个公钥</li>
+<li>用蓝牙将这个公钥广播出去</li>
+<li>一直循环直到这个message的所有比特位都全部发送完成就好了</li>
+</ol>
+<p><img src="/en/2022/03/23/2022/find_my_network/5.png"></p>
+<h4 id="接收解码"><a href="#接收解码" class="headerlink" title="接收解码"></a>接收解码</h4><blockquote>
+<p>When fetching data, the receiving application will generate the same 28-byte arrays (two per bit, for the possible bit values 0 and 1) and query the Apple service with the SHA256 hashes of those “public keys”. Only one of the two key ids should have location reports attached, which can then be interpreted (e.g. bit at index 0 equals 1).</p>
+</blockquote>
+<ol>
+<li>假设我们要接受一个message，我们需要确定这个message每个比特位是0还是1</li>
+<li>按照index顺序，生成跟上一步一样的公钥，但是我们不知道最后的比特位是0还是1，这是我们要最终接收的目标数据，因此最后的比特位，按照0生成一个公钥，按照1生成一个公钥</li>
+<li>用这个公钥的SHA256值去苹果的服务上查，看一下哪些公钥是能查到位置报告的</li>
+<li>有位置报告的公钥，就是有效的，没有位置报告的公钥就是无效</li>
+<li>将有效的公钥按照index排列最后的比特位，即可得到数据</li>
+</ol>
+<p><img src="/en/2022/03/23/2022/find_my_network/6.png"></p>
+<h4 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h4><blockquote>
+<p>The sending rate on the microcontroller is currently ~3 bytes/second<br><br> the receiving rate was limited by slow Mac hardware. Retrieving 16 bytes within one request takes ~5 seconds<br><br> The latency is usually between 1 and 60 minutes depending on how many devices are around and other random factors.</p>
+</blockquote>
+<p>发送速率大概3字节/秒，接收16字节大概需要5秒，跟人说话速率差不多，不过如果用于环境传感器(温湿度气压)数据的话，这个速率可以接受</p>
+<p>延迟大概1~60分钟不等，取决于周围苹果设备的数量。</p>
+<p><img src="/en/2022/03/23/2022/find_my_network/7.png"></p>
+<h2 id="实际的应用与网络安全防范"><a href="#实际的应用与网络安全防范" class="headerlink" title="实际的应用与网络安全防范"></a>实际的应用与网络安全防范</h2><p>技术永远是把双刃剑，这个在未来信息化和数字化的时代会越来越凸显。</p>
+<p>最大的应用场景就是没有网络的物联网设备LOT,没有手机SIM卡,没有蜂窝数据，没有Wifi的低功耗嵌入式设备</p>
+<p>物理隔离的环境，法拉第笼屏蔽电磁的环境，某些保密要害部位，这些地方就算安全也可能泄密,因为访客的苹果设备可能会将信息泄漏出去，因为这些地方就算没有互联网或者手机信号，也有可能被访客的苹果设备缓存在设备中，直到这些设备再次连接互联网后，缓存的信息就会被发送出去。</p>
+<p>这也是保密要害部位和一些物理隔离的重要涉密场所不让带手机进入的重要原因，某些重点保密单位不让使用苹果设备的原因也是如此，因为这些技术目前没有特定的解决方案，只能防范，毕竟国家安全至上，保守国家秘密是每个公民的基本义务。</p>
+<blockquote>
+<p>While I was mostly just curious about whether it would be possible, I would imagine the most common use case to be uploading sensor readings or any data from IoT devices without a broadband modem, SIM card, data plan or Wifi connectivity. With Amazon running a similar network called Sidewalk that uses Echo devices there might very well be demand for it. Since the Finding devices cache received broadcasts until they have an Internet connection, the sensors can even send out data from areas without mobile coverage as long as people pass the area.<br><br> In the world of high-security networks, where combining lasers and scanners seems to be a noteworthy technique to bridge the airgap, the visitor’s Apple devices might also become feasible intermediaries to exfiltrate data from certain airgapped systems or Faraday caged rooms.<br><br>It also seems like the Offline Finding protocol could be used to deplete nearby iPhone’s mobile data plans. With the number of location reports from a Finder device being limited (to 255 reports/submission due to a 1 byte count value) and each report being over 100 byte, broadcasting many unique public keys should result in an amplified amount of mobile traffic sent by the phone. While I haven’t noticed any rate limiting on the number of location reports sent out, I also haven’t tested how much data this would consume.</p>
+</blockquote>
+<h2 id="最新的项目进展"><a href="#最新的项目进展" class="headerlink" title="最新的项目进展"></a>最新的项目进展</h2><blockquote>
+<p>This project uses OpenHaystack to upload sensor data from a device without internet connection by (ab)using Apple’s Find My network. The data is broadcasted via Bluetooth Low Energy and forwarded by nearby Apple devices.<br><br>The application is based on the Send My project and runs on the real-time operating system Zephyr. Because this firmware is based on Zephyr, you can create your own sensor boards with one of the many Bluetooth Low Energy devices that Zephyr supports.<br><br>After flashing the firmware to your device, it sends out Bluetooth Low Energy advertisements with sensor data that will be visible in Send My’s DataFetcher application in macOS.</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/koenvervloesem/send-my-sensor">https://github.com/koenvervloesem/send-my-sensor</a></p>
+<p>这个开源项目实现的是Zephyr设备发送“无网络”传感器数据，目前还在开发阶段，基本固件已经完成。</p>
+<p>截至2022-2-13，已经实现了一个低功耗嵌入式设备传输气压传感器的数据了，通信协议是$i^2c$,源码修改之后就能适应各种传感器了</p>
+<h2 id="未来的物联网传感器网络发展方向"><a href="#未来的物联网传感器网络发展方向" class="headerlink" title="未来的物联网传感器网络发展方向"></a>未来的物联网传感器网络发展方向</h2><p>如上文所示，如果要自主建立这样一个分布式传感器网络，基础设施是很重要的，如果能有一个像苹果Find My的软硬件生态的话，当然更好，通过物联网从网络基础设施的接入，可以大大降低传感器网络的成本，实现大范围部署传感器网络.</p>
+<p>展望一下未来，超低功耗MESH工业物联网，户外接入设备无需高功耗的通信协议，通过蓝牙BLE接入互联网的应用层，这层物联网直接不依赖于经典的OSI 参考7层模型，或者TCP/IP 5层协议栈，通过这些分布式的AC(acess point)接入互联网,实现万物互联。</p>
+<h2 id="参考文献及资料-References"><a href="#参考文献及资料-References" class="headerlink" title="参考文献及资料(References)"></a>参考文献及资料(References)</h2><p>[1] Alexander Heinrich, Milan Stute, Tim Kornhuber, Matthias Hollick. <strong>Who Can <em>Find My</em> Devices? Security and Privacy of Apple’s Crowd-Sourced Bluetooth Location Tracking System.</strong> <em>Proceedings on Privacy Enhancing Technologies (PoPETs)</em>, 2021. <a target="_blank" rel="noopener" href="https://doi.org/10.2478/popets-2021-0045">doi:10.2478/popets-2021-0045</a> <a target="_blank" rel="noopener" href="https://www.petsymposium.org/2021/files/papers/issue3/popets-2021-0045.pdf">📄 Paper</a> <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2103.02282">📄 Preprint</a>.</p>
+<p>[2] Apple Inc. <strong>Find My Network Accessory Specification – Developer Preview – Release R3.</strong> 2020. <a target="_blank" rel="noopener" href="https://developer.apple.com/find-my/">📄 Download</a>.</p>
+<p>[3] 椭圆曲线加密算法原理解析（ECC）<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000019172260">https://segmentfault.com/a/1190000019172260</a></p>
+<p>[4] ESP-WIFI-MESH 概览| 乐鑫科技 <a target="_blank" rel="noopener" href="https://www.espressif.com/zh-hans/products/sdks/esp-wifi-mesh/overview">https://www.espressif.com/zh-hans/products/sdks/esp-wifi-mesh/overview</a></p>
+<p>[5] OpenHaystack project <a target="_blank" rel="noopener" href="https://github.com/seemoo-lab/openhaystack">https://github.com/seemoo-lab/openhaystack</a></p>
+<p>[6]  FABIAN BRÄUNLEIN , Positive Security. <strong>send my: arbitrary data transmission via apple’s find my network.</strong> <a target="_blank" rel="noopener" href="https://positive.security/blog/send-my">https://positive.security/blog/send-my</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>Geek_Cat
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="http://zhzhzhy.github.io/en/2022/03/23/2022/find_my_network/" title="分布式“无网络”传感器|由Apple AirTag对未来物联网的展望">http://zhzhzhy.github.io/en/2022/03/23/2022/find_my_network/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/en/tags/AirTag/" rel="tag"># AirTag</a>
+              <a href="/en/tags/Find-My-Network/" rel="tag"># Find My Network</a>
+              <a href="/en/tags/openhaystack/" rel="tag"># openhaystack</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/en/2022/03/20/2022/openwrt-bakcup-step/" rel="prev" title="Openwrt完整备份以及exroot挂载/overlay的思考">
+                  <i class="fa fa-chevron-left"></i> Openwrt完整备份以及exroot挂载/overlay的思考
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/en/2022/03/26/2022/the-republic/" rel="next" title="《理想国》柏拉图的哲学的三个比喻">
+                  《理想国》柏拉图的哲学的三个比喻 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Geek_Cat</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/en/js/comments.js"></script><script src="/en/js/utils.js"></script><script src="/en/js/motion.js"></script><script src="/en/js/next-boot.js"></script><script src="/en/js/bookmark.js"></script>
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.0/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/en/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/en/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"zhzhy-ml-en","count":true,"lazyload":false,"i18n":{"disqus":"disqus"}}</script>
+<script src="/en/js/third-party/comments/disqus.js"></script>
+
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js');
+  });
+}
+</script>
+
+</body>
+</html>
